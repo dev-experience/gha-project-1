@@ -6,11 +6,8 @@ EXPOSE 80
 # EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src2
-RUN pwd
-RUN ls -a
+WORKDIR /src
 COPY . .
-RUN dotnet restore "TicketlessFlowApp.csproj"
 RUN dotnet build "TicketlessFlowApp.csproj" --configuration Release --output /app/build
 
 FROM build AS publish
