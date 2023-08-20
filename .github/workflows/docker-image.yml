@@ -13,5 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: echo $(date +%s)
+    - run: pwd
+    - run: ls -a
     - name: Build the Docker image
-      run: docker build ./src/TicketlessFlowApp --file Dockerfile --tag ticketless-flow-app:$(date +%s)
+      run: docker build ./src/TicketlessFlowApp/ --file Dockerfile --tag ticketless-flow-app:$(date +%s)
