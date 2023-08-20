@@ -13,7 +13,9 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS publish
 # FROM build AS publish
 WORKDIR /src
+RUN ls -a
 COPY . .
+RUN ls -a
 RUN dotnet publish "TicketlessFlowApp.csproj" --configuration Release --output /app/publish /p:UseAppHost=false
 
 FROM base AS final
