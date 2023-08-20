@@ -3,15 +3,16 @@
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated6.0 AS base
 WORKDIR /home/site/wwwroot
 EXPOSE 80
+# EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR "."
+RUN pwd
 COPY . .
 RUN dotnet restore "TicketlessFlowApp.csproj"
-RUN dotnet build "TicketlessFlowApp.csproj" -c Release -o /app/build
+RUN dotnet build "TicketlessFlowApp.csproj" --configuration Release --output /app/build
 
 FROM build AS publish
-RUN dotnet publish "TicketlessFlowApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "TicketlessFlowApp.csproj" --configuration Release --output /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /home/site/wwwroot
