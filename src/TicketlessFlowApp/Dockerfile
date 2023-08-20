@@ -5,12 +5,15 @@ WORKDIR /home/site/wwwroot
 EXPOSE 80
 # EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# WORKDIR /src
+# COPY . .
+# RUN dotnet build "TicketlessFlowApp.csproj" --configuration Release --output /app/build
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS publish
+# FROM build AS publish
 WORKDIR /src
 COPY . .
-RUN dotnet build "TicketlessFlowApp.csproj" --configuration Release --output /app/build
-
-FROM build AS publish
 RUN dotnet publish "TicketlessFlowApp.csproj" --configuration Release --output /app/publish /p:UseAppHost=false
 
 FROM base AS final
