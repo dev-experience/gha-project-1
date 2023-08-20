@@ -5,11 +5,9 @@ WORKDIR /home/site/wwwroot
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["TicketlessFlowApp/TicketlessFlowApp.csproj", "TicketlessFlowApp/"]
-RUN dotnet restore "TicketlessFlowApp/TicketlessFlowApp.csproj"
+WORKDIR "."
 COPY . .
-WORKDIR "/src/TicketlessFlowApp"
+RUN dotnet restore "TicketlessFlowApp.csproj"
 RUN dotnet build "TicketlessFlowApp.csproj" -c Release -o /app/build
 
 FROM build AS publish
