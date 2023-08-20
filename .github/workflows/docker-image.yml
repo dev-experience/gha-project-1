@@ -13,4 +13,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file ./src/TicketlessFlowApp/Dockerfile --tag ticketless-flow-app:$(date +%s)
+      working-directory: ./src/TicketlessFlowApp
+      run: docker build . --file Dockerfile --tag ticketless-flow-app:$(date +%s)
