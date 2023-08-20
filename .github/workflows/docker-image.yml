@@ -16,4 +16,4 @@ jobs:
     - run: pwd
     - run: ls -a
     - name: Build the Docker image
-      run: docker build ./src/TicketlessFlowApp/ --file Dockerfile --tag ticketless-flow-app:$(date +%s)
+      run: docker build . --file Dockerfile --tag ticketless-flow-app:$(date +%s)
