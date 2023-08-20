@@ -7,6 +7,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 RUN pwd
+WORKDIR "/"
+RUN pwd
 COPY . .
 RUN dotnet restore "TicketlessFlowApp.csproj"
 RUN dotnet build "TicketlessFlowApp.csproj" --configuration Release --output /app/build
