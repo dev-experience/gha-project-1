@@ -19,13 +19,13 @@ WORKDIR /src
 COPY . .
 # TODO: Remove after troubleshooting
 RUN ls -a
-CMD ["dotnet", "test", "./Xtz.TicketlessFlowApp.UnitTests/Xtz.TicketlessFlowApp.UnitTests.csproj", "--logger:trx"]
+CMD ["dotnet", "test", "./Xtz.TicketlessFlowApp.UnitTests/Xtz.TicketlessFlowApp.UnitTests.csproj", "--logger:trx;LogFilePath=test_results/unitTests.xml"]
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS integration-tests-runner
 WORKDIR /src
 # Copy source code of the whole solution to the Docker image
 COPY . .
-CMD ["dotnet", "test", "./Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj", "--logger:trx"]
+CMD ["dotnet", "test", "./Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj", "--logger:trx;LogFilePath=test_results/integrationTests.xml"]
 
 FROM base AS final
 ARG REPOSITORY_URL

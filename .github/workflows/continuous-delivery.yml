@@ -15,8 +15,17 @@ jobs:
       - name: Run Unit Tests
         working-directory: ./src
         run: |
+          md test_results
           docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
-          docker run ticketless-flow-app-unit-tests:latest
+          docker run --volume ./test_results test_results ticketless-flow-app-unit-tests:latest
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Dotnet test results
+          path: "src/test_results/*.trx"
+          reporter: dotnet-trx
+          fail-on-error: true
 
   # run-integration-tests:
   #   name: CI - Run Integration Tests
