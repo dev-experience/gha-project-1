@@ -13,6 +13,8 @@ permissions:
   checks: write
   contents: write
   pull-requests: write
+  # statuses: write
+  # actions: write
 
 jobs:
   run-unit-tests:
@@ -41,12 +43,21 @@ jobs:
   #   runs-on: ubuntu-latest
   #   # runs-on: self-hosted
   #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Run Integration Tests
-  #     working-directory: ./src
-  #     run: |
-  #       docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
-  #       docker run ticketless-flow-app-integration-tests:latest
+  #     - uses: actions/checkout@v3
+  #     - name: Run Integration Tests
+  #       working-directory: ./src
+  #       run: |
+  #         mkdir -p test_results
+  #         docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
+  #         docker run --volume ./test_results:/src/test_results ticketless-flow-app-integration-tests:latest
+  #     - name: Test Report
+  #       uses: dorny/test-reporter@v1
+  #       if: always()
+  #       with:
+  #         name: Dotnet test results
+  #         path: "src/test_results/*.trx"
+  #         reporter: dotnet-trx
+  #         fail-on-error: true
 
   docker-push:
     name: CI - Build and push Docker image
