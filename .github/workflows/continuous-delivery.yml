@@ -15,7 +15,7 @@ jobs:
       - name: Run Unit Tests
         working-directory: ./src
         run: |
-          md test_results
+          mkdir -p test_results
           docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
           docker run --volume ./test_results test_results ticketless-flow-app-unit-tests:latest
       - name: Test Report
