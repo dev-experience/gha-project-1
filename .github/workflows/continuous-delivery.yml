@@ -3,8 +3,8 @@ name: Continuous Delivery
 on:
   push:
     paths: src
-  pull_request:
-    branches: [ "main2" ]
+  # pull_request:
+  #   branches: [ "main2" ]
 
 jobs:
   build-docker-image:
