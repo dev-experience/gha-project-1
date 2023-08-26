@@ -49,4 +49,6 @@ jobs:
       # - run-integration-tests
     steps:
       - name: Docker push
-        run: docker push ghcr.io/dev-experience/ticketless-flow-app:latest
+        run: |
+          docker tag ticketless-flow-app:latest ghcr.io/dev-experience/ticketless-flow-app:latest
+          docker push ghcr.io/dev-experience/ticketless-flow-app:latest
