@@ -28,8 +28,9 @@ COPY . .
 CMD ["dotnet", "test", "./Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj", "--logger:trx"]
 
 FROM base AS final
-# TODO: Replace by ARGS
-LABEL org.opencontainers.image.source="https://github.com/dev-experience/gha-project-1"
+ARG REPOSITORY_URL
+LABEL org.opencontainers.image.description="Ticketless Flow App"
+LABEL org.opencontainers.image.source=${REPOSITORY_URL}
 WORKDIR /home/site/wwwroot
 COPY --from=publish /app/publish .
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
