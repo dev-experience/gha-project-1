@@ -2,7 +2,8 @@ name: Continuous Delivery
 
 on:
   push:
-     paths: 'src'
+    branches: '*'
+    paths: 'src'
   pull_request:
     branches: [ "main" ]
 
