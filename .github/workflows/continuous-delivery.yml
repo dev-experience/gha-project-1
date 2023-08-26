@@ -5,6 +5,15 @@ on:
   pull_request:
     types: [ closed ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  checks: write
+  contents: write
+  pull-requests: write
+
 jobs:
   run-unit-tests:
     name: CI - Run Unit Tests
