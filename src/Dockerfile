@@ -18,13 +18,13 @@ WORKDIR /src
 COPY . .
 # TODO: Remove after troubleshooting
 RUN ls -a
-CMD ["dotnet", "test", "'./Xtz.TicketlessFlowApp.UnitTests/Xtz.TicketlessFlowApp.UnitTests.csproj' --logger:trx"]
+CMD ["dotnet", "test", "'./Xtz.TicketlessFlowApp.UnitTests/Xtz.TicketlessFlowApp.UnitTests.csproj'", "--logger:trx"]
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS integration-tests-runner
 WORKDIR /src
 # Copy source code of the whole solution to the Docker image
 COPY . .
-CMD ["dotnet", "test", "'./Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj' --logger:trx"]
+CMD ["dotnet", "test", "'./Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj'", "--logger:trx"]
 
 FROM base AS final
 WORKDIR /home/site/wwwroot
