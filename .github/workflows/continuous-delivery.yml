@@ -14,5 +14,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      working-directory: ./src/TicketlessFlowApp
-      run: docker build . --file Dockerfile --tag ticketless-flow-app:$(date +%s)
+      working-directory: ./src
+      run: docker build . --tag ticketless-flow-app:$(date +%s) ticketless-flow-app:latest
+
+  run-unit-tests:
+    name: CI - Run Unit Tests
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Unit Tests
+      working-directory: ./src
+      run: |
+        docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
+        docker run ticketless-flow-app-unit-tests:latest
