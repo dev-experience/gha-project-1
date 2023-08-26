@@ -2,9 +2,8 @@ name: Continuous Delivery
 
 on:
   push:
-    paths: src/**
   pull_request:
-    branches: [ "main" ]
+    types: [ opened, reopened, synchronize ]
 
 jobs:
   build-docker-image:
