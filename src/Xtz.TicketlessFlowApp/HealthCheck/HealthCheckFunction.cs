@@ -34,7 +34,7 @@ namespace Xtz.TicketlessFlowApp.HealthCheck
             await response.WriteAsJsonAsync(dto);
             return response;
         }
-
+        
         public class HealthCheckDto
         {
             [JsonPropertyName("status")]
