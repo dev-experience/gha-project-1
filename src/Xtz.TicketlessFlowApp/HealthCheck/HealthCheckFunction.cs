@@ -24,14 +24,14 @@ namespace Xtz.TicketlessFlowApp.HealthCheck
         {
             _logger.LogInformation("Processing health check request");
 
-            var dto1 = new HealthCheckDto
+            var dto = new HealthCheckDto
             {
                 Status = "OK",
                 CorrelationId = _correlationIdGenerator.Generate(),
             };
 
             var response = req.CreateResponse(HttpStatusCode.OK);
-            await response.WriteAsJsonAsync(dto1);
+            await response.WriteAsJsonAsync(dto);
             return response;
         }
 
