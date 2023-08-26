@@ -1,6 +1,6 @@
-namespace Xtz.TicketlessFlowApp.HealthCheck;
+namespace Xtz.TicketlessFlowApp.Core;
 
 public interface ICorrelationIdGenerator
 {
-    Guid Generate();
+    string Generate();
 }

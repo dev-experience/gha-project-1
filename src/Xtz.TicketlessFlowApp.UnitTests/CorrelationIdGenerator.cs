@@ -1,4 +1,6 @@
 using FluentAssertions;
+using Microsoft.Extensions.Options;
+using Xtz.TicketlessFlowApp.Core;
 
 namespace Xtz.TicketlessFlowApp.UnitTests
 {
@@ -11,7 +13,12 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             {
                 // Arrange
 
-                var sut = new HealthCheck.CorrelationIdGenerator();
+                var options = Options.Create(new CorrelationGeneratorOptions()
+                {
+                    Prefix = "TEST",
+                });
+
+                var sut = new Core.CorrelationIdGenerator(options);
 
                 // Act
 
@@ -20,6 +27,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
                 // Assert
 
                 result.Should().NotBeEmpty();
+                result.Should().StartWith("TEST");
             }
         }
     }

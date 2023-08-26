@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Xtz.TicketlessFlowApp.Core;
 
 namespace Xtz.TicketlessFlowApp.HealthCheck
 {
@@ -40,7 +41,7 @@ namespace Xtz.TicketlessFlowApp.HealthCheck
             public string? Status { get; init; }
 
             [JsonPropertyName("correlationId")]
-            public Guid CorrelationId { get; init; }
+            public string CorrelationId { get; init; }
         }
     }
 }
