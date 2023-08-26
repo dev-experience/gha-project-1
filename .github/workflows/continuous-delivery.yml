@@ -28,3 +28,15 @@ jobs:
       run: |
         docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
         docker run ticketless-flow-app-unit-tests:latest
+
+  run-integration-tests:
+    name: CI - Run Integration Tests
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Integration Tests
+      working-directory: ./src
+      run: |
+        docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
+        docker run ticketless-flow-app-integration-tests:latest
