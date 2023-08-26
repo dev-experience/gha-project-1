@@ -2,9 +2,9 @@ name: Continuous Delivery
 
 on:
   push:
-    paths: src
-  # pull_request:
-  #   branches: [ "main2" ]
+    paths: src/*
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build-docker-image:
