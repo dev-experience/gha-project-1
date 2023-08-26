@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir -p test_results
           docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
-          docker run --volume $(pwd)/test_results:test_results ticketless-flow-app-unit-tests:latest
+          docker run --volume ./test_results:/src/test_results ticketless-flow-app-unit-tests:latest
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: always()
