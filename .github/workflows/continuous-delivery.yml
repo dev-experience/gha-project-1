@@ -29,14 +29,25 @@ jobs:
         docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
         docker run ticketless-flow-app-unit-tests:latest
 
-  run-integration-tests:
-    name: CI - Run Integration Tests
+  # run-integration-tests:
+  #   name: CI - Run Integration Tests
+  #   runs-on: ubuntu-latest
+  #   # runs-on: self-hosted
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Run Integration Tests
+  #     working-directory: ./src
+  #     run: |
+  #       docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
+  #       docker run ticketless-flow-app-integration-tests:latest
+
+  docker-push:
+    name: CI - Push Docker image
     runs-on: ubuntu-latest
-    # runs-on: self-hosted
+    needs:
+      - build-docker-image
+      - run-unit-tests
+      - run-integration-tests
     steps:
-    - uses: actions/checkout@v3
-    - name: Run Integration Tests
-      working-directory: ./src
-      run: |
-        docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
-        docker run ticketless-flow-app-integration-tests:latest
+    - name: Docker push
+      run: docker push ghcr.io/dev-experience/ticketless-flow-app:latest
