@@ -12,22 +12,22 @@ jobs:
     runs-on: ubuntu-latest
     # runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      working-directory: ./src
-      run: docker build . --tag ticketless-flow-app:$(date +%s) --tag ticketless-flow-app:latest
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        working-directory: ./src
+        run: docker build . --tag ticketless-flow-app:$(date +%s) --tag ticketless-flow-app:latest
 
   run-unit-tests:
     name: CI - Run Unit Tests
     runs-on: ubuntu-latest
     # runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
-    - name: Run Unit Tests
-      working-directory: ./src
-      run: |
-        docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
-        docker run ticketless-flow-app-unit-tests:latest
+      - uses: actions/checkout@v3
+      - name: Run Unit Tests
+        working-directory: ./src
+        run: |
+          docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
+          docker run ticketless-flow-app-unit-tests:latest
 
   # run-integration-tests:
   #   name: CI - Run Integration Tests
@@ -44,10 +44,11 @@ jobs:
   docker-push:
     name: CI - Push Docker image
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs:
       - build-docker-image
       - run-unit-tests
-      - run-integration-tests
+      # - run-integration-tests
     steps:
-    - name: Docker push
-      run: docker push ghcr.io/dev-experience/ticketless-flow-app:latest
+      - name: Docker push
+        run: docker push ghcr.io/dev-experience/ticketless-flow-app:latest
