@@ -48,7 +48,14 @@ jobs:
       - run-unit-tests
       # - run-integration-tests
     steps:
+      # - name: Login to Github Container Registry
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker push
         run: |
+          docker pull ticketless-flow-app:latest
           docker tag ticketless-flow-app:latest ghcr.io/dev-experience/ticketless-flow-app:latest
           docker push ghcr.io/dev-experience/ticketless-flow-app:latest

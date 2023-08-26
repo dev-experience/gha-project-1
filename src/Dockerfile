@@ -28,6 +28,8 @@ COPY . .
 CMD ["dotnet", "test", "./Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj", "--logger:trx"]
 
 FROM base AS final
+# TODO: Replace by ARGS
+LABEL org.opencontainers.image.source="https://github.com/dev-experience/gha-project-1"
 WORKDIR /home/site/wwwroot
 COPY --from=publish /app/publish .
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
