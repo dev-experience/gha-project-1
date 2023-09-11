@@ -44,29 +44,29 @@ jobs:
           reporter: dotnet-trx
           fail-on-error: true
 
-  # run-integration-tests:
-  #   name: CI - Run Integration Tests
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     checks: write
-  #     contents: write
-  #     pull-requests: write
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Run Integration Tests
-  #       working-directory: ./src
-  #       run: |
-  #         docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
-  #         mkdir test_results
-  #         docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-integration-tests:latest
-  #     - name: Create test report
-  #       uses: dorny/test-reporter@v1
-  #       if: ${{ !cancelled() }}
-  #       with:
-  #         name: Integration Tests report
-  #         path: "./src/test_results/*.trx"
-  #         reporter: dotnet-trx
-  #         fail-on-error: true
+  run-integration-tests:
+    name: CI - Run Integration Tests
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Integration Tests
+        working-directory: ./src
+        run: |
+          docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
+          mkdir test_results
+          docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-integration-tests:latest
+      - name: Create test report
+        uses: dorny/test-reporter@v1
+        if: ${{ !cancelled() }}
+        with:
+          name: Integration Tests report
+          path: "./src/test_results/*.trx"
+          reporter: dotnet-trx
+          fail-on-error: true
 
   docker-build-and-push:
     name: CI - Build and push Docker image
