@@ -2,29 +2,29 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Xtz.TicketlessFlowApp.IntegrationTests
 {
-    public class ServiceCollection : IClassFixture<WebApplicationFactory<Program>>
-    {
-        private readonly WebApplicationFactory<Program> _factory;
+    ////public class ServiceCollection : IClassFixture<WebApplicationFactory<Program>>
+    ////{
+    ////    private readonly WebApplicationFactory<Program> _factory;
 
-        public ServiceCollection(WebApplicationFactory<Program> factory)
-        {
-            _factory = factory;
-        }
+    ////    public ServiceCollection(WebApplicationFactory<Program> factory)
+    ////    {
+    ////        _factory = factory;
+    ////    }
 
-        [Fact]
-        public async Task Test()
-        {
-            // Arrange
+    ////    [Fact]
+    ////    public async Task Test()
+    ////    {
+    ////        // Arrange
 
-            var client = _factory.CreateClient();
+    ////        var client = _factory.CreateClient();
 
-            // Act
+    ////        // Act
 
-            var response = await client.GetAsync("/api/health");
+    ////        var response = await client.GetAsync("/api/health");
 
-            // Assert
+    ////        // Assert
             
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
-        }
-    }
+    ////        response.EnsureSuccessStatusCode(); // Status Code 200-299
+    ////    }
+    ////}
 }

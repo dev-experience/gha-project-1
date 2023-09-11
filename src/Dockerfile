@@ -17,8 +17,6 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit-tests-runner
 WORKDIR /src
 # Copy source code of the whole solution to the Docker image
 COPY . .
-# TODO: Remove after troubleshooting
-RUN ls -a
 CMD dotnet test './Xtz.TicketlessFlowApp.UnitTests/Xtz.TicketlessFlowApp.UnitTests.csproj' --logger:'trx;LogFilename=/src/test_results/unitTests.trx'
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS integration-tests-runner
@@ -28,8 +26,9 @@ COPY . .
 CMD dotnet test './Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.IntegrationTests.csproj' --logger:'trx;LogFilename=/src/test_results/integrationTests.trx'
 
 FROM base AS final
+ARG APP_NAME
 ARG REPOSITORY_URL
-LABEL org.opencontainers.image.description="Ticketless Flow App"
+LABEL org.opencontainers.image.description=${APP_NAME}
 LABEL org.opencontainers.image.source=${REPOSITORY_URL}
 WORKDIR /home/site/wwwroot
 COPY --from=publish /app/publish .
