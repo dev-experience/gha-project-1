@@ -39,6 +39,7 @@ resource "azurerm_linux_function_app" "this" {
 
   site_config {
     ftps_state = "Disabled"
+    health_check_path = "/api/health"
 
     application_stack {
       # dotnet_version = "6.0"
