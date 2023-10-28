@@ -149,7 +149,7 @@ jobs:
           ARM_TENANT_ID: ${{ vars.TF_VAR_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.TF_VAR_AGENT_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.TF_VAR_AGENT_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ vars.TF_VAR_SUBSCRIPTION_ID }}
+          # ARM_SUBSCRIPTION_ID: ${{ vars.TF_VAR_SUBSCRIPTION_ID }}
 
       - name: Terraform validate
         working-directory: ./terraform
