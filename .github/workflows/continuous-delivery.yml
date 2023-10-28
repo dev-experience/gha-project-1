@@ -137,6 +137,7 @@ jobs:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         run: |
           echo "$AZURE_CREDENTIALS" | sed -r 's/": "/_/g'
+          az login --service-principal --username "0ab8c2d1-790d-43fd-a66f-27d2604d1f79" --password "EDx8Q~dcK.lISdF-2hSeSnB9IdN_mpCZXn66Cdnt" --tenant "f4b1cb88-8d5a-4a14-b76f-f28c8fe984f7" --allow-no-subscriptions
 
       - name: az login
         uses: azure/login@v1
