@@ -3,7 +3,8 @@ resource "azurerm_service_plan" "this" {
   resource_group_name         = var.resource_group_name
   location                    = var.location
 
-  sku_name = "Y1"
+
+  sku_name = "B1"
   os_type  = "Linux"
 
   tags = var.tags
@@ -37,8 +38,18 @@ resource "azurerm_linux_function_app" "this" {
   tags = var.tags
 
   site_config {
+    ftps_state = "Disabled"
+
     application_stack {
-      dotnet_version = "6.0"
+      # dotnet_version = "6.0"
+
+      docker {
+        registry_url = "ghcr.io"
+        registry_username = "dev-experience"
+        registry_password = "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"
+        image_name = "dev-experience/ticketless-flow-app"
+        image_tag = "latest"
+      }
     }
   }
 
@@ -47,9 +58,18 @@ resource "azurerm_linux_function_app" "this" {
   }
 
   app_settings = {
-    "WEBSITE_RUN_FROM_PACKAGE"    = "1"
+    # WEBSITE_RUN_FROM_PACKAGE    = "1"
 
-    "APPLICATIONINSIGHTS_CONNECTION_STRING" = var.application_insights_connection_string
+    APPLICATIONINSIGHTS_CONNECTION_STRING = var.application_insights_connection_string
+
+    # TODO: Double check
+    WEBSITE_WEBDEPLOY_USE_SCM           = true
+    # TODO: Inject environment
+    ASPNETCORE_ENVIRONMENT              = "Production"
+    FUNCTIONS_WORKER_RUNTIME            = "dotnet-isolated"
+    # TODO: Double check
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+
 
     # # These are app specific environment variables
 
