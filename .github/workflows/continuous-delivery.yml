@@ -135,6 +135,12 @@ jobs:
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1
 
+      - shell: bash
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          echo "$AZURE_CREDENTIALS"
+
       - name: az login
         uses: azure/login@v1
         with:
