@@ -132,22 +132,24 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - shell: bash
-        env:
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        run: |
-          echo "$AZURE_CREDENTIALS" | sed -r 's/": "/_/g'
-          az login --service-principal --username "0ab8c2d1-790d-43fd-a66f-27d2604d1f79" --password "kCf8Q~FwU8DRRBQ3G1--4dbF_tGtuqlCyHLphaYc" --tenant "f4b1cb88-8d5a-4a14-b76f-f28c8fe984f7" --allow-no-subscriptions
-
-      - name: az login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          # allow-no-subscriptions: true
+      # - shell: bash
+      #   env:
+      #     AZURE_CREDENTIALS: ${{ secrets.AZ_CLIENT }}
+      #   run: |
+      #     az login --service-principal \
+      #       --username "0ab8c2d1-790d-43fd-a66f-27d2604d1f79"
+      #       --password "kCf8Q~FwU8DRRBQ3G1--4dbF_tGtuqlCyHLphaYc"
+      #       --tenant "f4b1cb88-8d5a-4a14-b76f-f28c8fe984f7"
+      #       --allow-no-subscriptions
 
       - name: Terraform init
         working-directory: ./terraform
         run: terraform init
+        env:
+          TF_VAR_tenant_id: ${{ env.TF_VAR_tenant_id }}
+          TF_VAR_agent_client_id: ${{ env.TF_VAR_agent_client_id }}
+          TF_VAR_agent_client_secret: ${{ secrets.TF_VAR_agent_client_secret }}
+          TF_VAR_subscription_id: ${{ env.TF_VAR_subscription_id }}
 
       - name: Terraform validate
         working-directory: ./terraform
