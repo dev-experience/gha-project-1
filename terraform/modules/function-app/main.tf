@@ -46,6 +46,7 @@ resource "azurerm_linux_function_app" "this" {
       # dotnet_version = "6.0"
 
       docker {
+        // TODO: Inject from parameters
         registry_url = "ghcr.io"
         registry_username = "dev-experience"
         registry_password = "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"
