@@ -39,6 +39,7 @@ resource "azurerm_linux_function_app" "this" {
 
   site_config {
     ftps_state = "Disabled"
+    always_on = true
     health_check_path = "/api/health"
 
     application_stack {
