@@ -134,6 +134,12 @@ jobs:
       # - name: Setup Terraform
       #   uses: hashicorp/setup-terraform@v1
 
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          allow-no-subscriptions: true
+
       - name: Terraform init
         working-directory: ./terraform
         run: terraform init
@@ -141,12 +147,6 @@ jobs:
       - name: Terraform validate
         working-directory: ./terraform
         run: terraform validate -var-file="./vars/dev.tfvars"
-
-      - name: az login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          allow-no-subscriptions: true
 
       - name: Terraform plan
         working-directory: ./terraform
