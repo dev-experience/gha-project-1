@@ -109,3 +109,46 @@ jobs:
 
       - name: Inspect Docker image
         run: docker inspect ghcr.io/dev-experience/ticketless-flow-app:latest
+
+  run-terraform-d:
+    name: CD - Provision infrastructure - D
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    # environment: development
+    # environment:
+    #   name: development
+    #   url: https://fn-ticketless-flow-app-d.azurewebsites.net
+    needs:
+      - docker-build-and-push
+    steps:
+
+      - uses: actions/checkout@v3
+
+      # - name: Setup Terraform
+      #   uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Terraform validate
+        working-directory: ./terraform
+        run: terraform validate -var-file="./vars/dev.tfvars"
+
+      - name: Terraform plan
+        working-directory: ./terraform
+        run: terraform plan -var-file="./vars/dev.tfvars" -out="tfplan"
+        # env:
+        #   TF_VAR_agent_client_id: ${{ secrets.TF_VAR_agent_client_id }}
+        #   TF_VAR_agent_client_secret: ${{ secrets.TF_VAR_agent_client_secret }}
+        #   TF_VAR_subscription_id: ${{ secrets.TF_VAR_subscription_id }}
+        #   TF_VAR_tenant_id: ${{ secrets.TF_VAR_tenant_id }}
+
+      - name: Terraform apply
+        working-directory: ./terraform
+        run: terraform apply "tfplan"
+        # env:
+        #   TF_VAR_agent_client_id: ${{ secrets.TF_VAR_agent_client_id }}
+        #   TF_VAR_agent_client_secret: ${{ secrets.TF_VAR_agent_client_secret }}
+        #   TF_VAR_subscription_id: ${{ secrets.TF_VAR_subscription_id }}
+        #   TF_VAR_tenant_id: ${{ secrets.TF_VAR_tenant_id }}
