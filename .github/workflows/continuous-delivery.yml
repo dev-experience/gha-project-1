@@ -6,7 +6,8 @@ on:
     types: [ closed ]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # https://docs.github.com/en/actions/learn-github-actions/variables
+  group: ${{ github.workflow_ref }}
   cancel-in-progress: true
 
 jobs:
