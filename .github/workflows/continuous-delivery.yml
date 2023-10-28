@@ -83,6 +83,8 @@ jobs:
     needs:
       - run-unit-tests
       - run-integration-tests
+    permissions:
+      packages: write
     steps:
 
       - uses: actions/checkout@v3
