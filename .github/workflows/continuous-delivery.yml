@@ -161,3 +161,11 @@ jobs:
           TF_VAR_agent_client_id: ${{ env.TF_VAR_agent_client_id }}
           TF_VAR_agent_client_secret: ${{ secrets.TF_VAR_agent_client_secret }}
           TF_VAR_subscription_id: ${{ env.TF_VAR_subscription_id }}
+
+      - name: az logout
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az logout
+            az cache purge
+            az account clear
