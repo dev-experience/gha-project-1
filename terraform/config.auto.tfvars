@@ -1,4 +1,4 @@
 base_name = "ticketless-flow"
-location  = "westeurope"
+location  = "centralus"
 
 tag_business_unit = "Ticketless"

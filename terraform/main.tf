@@ -51,18 +51,19 @@ output "region_name" {
 module "storage_account" {
   source              = "./modules/storage-account"
   resource_group_name = var.resource_group_name
-  base_name           = var.base_name
   location            = var.location
+  base_name           = var.base_name
   environment         = var.environment
+
   tags                = local.tags
 }
 
 module "application_insights" {
   source              = "./modules/application-insights"
   resource_group_name = var.resource_group_name
+  location            = var.location
   base_name           = var.base_name
   environment         = var.environment
-  location            = var.location
 
   tags = local.tags
 }
@@ -70,9 +71,9 @@ module "application_insights" {
 module "key_vault" {
   source              = "./modules/key-vault"
   resource_group_name = var.resource_group_name
+  location            = var.location
   base_name           = var.base_name
   environment         = var.environment
-  location            = var.location
 
   tags = local.tags
 }
@@ -80,9 +81,9 @@ module "key_vault" {
 module "function_app" {
   source              = "./modules/function-app"
   resource_group_name = var.resource_group_name
+  location            = var.location
   base_name           = var.base_name
   environment         = var.environment
-  location            = var.location
 
   tags = local.tags
 
