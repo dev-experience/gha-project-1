@@ -1,3 +1,3 @@
-subscription_id     = "65d144de-ddc8-448d-8db3-0100f7ae8e4c"
-resource_group_name = "rg-we-ticketless-flow-d"
+subscription_id     = "8a5d8372-6c08-4017-8642-29bde3b6432e"
+resource_group_name = "rg-cu-ticketless-flow-t"
 environment         = "Test"
