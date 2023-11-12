@@ -41,6 +41,7 @@ resource "azurerm_linux_function_app" "this" {
     ftps_state = "Disabled"
     always_on = true
     health_check_path = "/api/health"
+    application_insights_connection_string = var.application_insights_connection_string
 
     application_stack {
       # dotnet_version = "6.0"
@@ -63,7 +64,7 @@ resource "azurerm_linux_function_app" "this" {
   app_settings = {
     # WEBSITE_RUN_FROM_PACKAGE    = "1"
 
-    APPLICATIONINSIGHTS_CONNECTION_STRING = var.application_insights_connection_string
+    AzureWebJobsStorage = "DefaultEndpointsProtocol=https;AccountName=${var.storage_account_name};AccountKey=${var.storage_account_access_key}"
 
     # TODO: Double check
     WEBSITE_WEBDEPLOY_USE_SCM           = true
