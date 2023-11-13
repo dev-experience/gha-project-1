@@ -1,3 +1,7 @@
+module "constants" {
+  source = "./constants"
+}
+
 variable "subscription_id" {
   type        = string
   description = "Subscription ID"
@@ -26,4 +30,8 @@ variable "location" {
 variable "tag_business_unit" {
   type        = string
   description = "Tag for Business Unit"
+}
+
+locals {
+  environment_slug = module.constants.environment_slugs[var.environment]
 }
