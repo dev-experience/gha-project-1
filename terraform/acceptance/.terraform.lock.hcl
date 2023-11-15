@@ -3,7 +3,7 @@
 
 provider "registry.terraform.io/cloud-maker-ai/arm2tf" {
   version     = "0.2.2"
-  constraints = "0.2.2"
+  constraints = "~> 0.2.2"
   hashes = [
     "h1:/mayEngwvcyXjiwYdGzSeGEOuN8uyEo0aW5OJvamghY=",
     "zh:02d8422c8f33e581d3b0e2ee90311a14e29f4b914e4eaacda3e82ffbf4b5d2b6",
@@ -26,7 +26,7 @@ provider "registry.terraform.io/cloud-maker-ai/arm2tf" {
 
 provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "3.76.0"
-  constraints = "3.76.0"
+  constraints = "~> 3.76.0"
   hashes = [
     "h1:b7wCNsV0HyJalcmjth7Y4nSBuZqEjbA0Phpggoy4bLE=",
     "zh:33c6b1559b012d03befeb8ee9cf5b88c31acd64983dd4f727a49a436008b5577",
