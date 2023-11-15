@@ -124,7 +124,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: Test
-      url: https://func-cu-ticketless-flow-t.azurewebsites.net
+      url: https://func-cu-ticketless-flow-t.azurewebsites.net/api/health
     needs:
       - docker-build-and-push
     env:
@@ -161,48 +161,48 @@ jobs:
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
-  run-deploy-a:
-    name: CD - A - Deploy
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: Acceptance
-      url: https://func-cu-ticketless-flow-a.azurewebsites.net
-    needs:
-      - run-deploy-t
-    env:
-      ENVIRONMENT: acceptance
-    steps:
+  # run-deploy-a:
+  #   name: CD - A - Deploy
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   environment:
+  #     name: Acceptance
+  #     url: https://func-cu-ticketless-flow-a.azurewebsites.net/api/health
+  #   needs:
+  #     - run-deploy-t
+  #   env:
+  #     ENVIRONMENT: acceptance
+  #   steps:
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
-      - name: Terraform init
-        working-directory: ./terraform
-        run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
-        env:
-          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     - name: Terraform init
+  #       working-directory: ./terraform
+  #       run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
+  #       env:
+  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
-      - name: Terraform validate
-        working-directory: ./terraform
-        run: terraform validate
+  #     - name: Terraform validate
+  #       working-directory: ./terraform
+  #       run: terraform validate
 
-      - name: Terraform plan
-        working-directory: ./terraform
-        run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
-        env:
-          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     - name: Terraform plan
+  #       working-directory: ./terraform
+  #       run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
+  #       env:
+  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
-      - name: Terraform apply
-        working-directory: ./terraform
-        run: terraform apply "tfplan"
-        env:
-          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     - name: Terraform apply
+  #       working-directory: ./terraform
+  #       run: terraform apply "tfplan"
+  #       env:
+  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
   # run-deploy-p:
   #   name: CD - P - Deploy
@@ -210,7 +210,7 @@ jobs:
   #   if: github.ref == 'refs/heads/main'
   #   environment:
   #     name: Production
-  #     url: https://func-cu-ticketless-flow-p.azurewebsites.net
+  #     url: https://func-cu-ticketless-flow-p.azurewebsites.net/api/health
   #   env:
   #     ENVIRONMENT: production
   #   needs:
