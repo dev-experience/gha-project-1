@@ -195,7 +195,6 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          VAR_FILE: ./env/acceptance.tfvars
 
       - name: Terraform apply
         working-directory: ./terraform
@@ -239,7 +238,6 @@ jobs:
   #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
   #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
   #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #         VAR_FILE: ./env/production.tfvars
 
   #     - name: Terraform apply
   #       working-directory: ./terraform
