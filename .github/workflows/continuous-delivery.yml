@@ -127,32 +127,34 @@ jobs:
       url: https://func-cu-ticketless-flow-t.azurewebsites.net
     needs:
       - docker-build-and-push
+    env:
+      ENVIRONMENT: test
     steps:
 
       - uses: actions/checkout@v3
 
       - name: Terraform init
-        working-directory: ./terraform/test
-        run: terraform init
+        working-directory: ./terraform
+        run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
       - name: Terraform validate
-        working-directory: ./terraform/test
+        working-directory: ./terraform
         run: terraform validate
 
       - name: Terraform plan
-        working-directory: ./terraform/test
-        run: terraform plan -var-file="../config.tfvars" -out="tfplan"
+        working-directory: ./terraform
+        run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
       - name: Terraform apply
-        working-directory: ./terraform/test
+        working-directory: ./terraform
         run: terraform apply "tfplan"
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
@@ -168,32 +170,34 @@ jobs:
       url: https://func-cu-ticketless-flow-a.azurewebsites.net
     needs:
       - run-deploy-t
+    env:
+      ENVIRONMENT: acceptance
     steps:
 
       - uses: actions/checkout@v3
 
       - name: Terraform init
-        working-directory: ./terraform/acceptance
-        run: terraform init
+        working-directory: ./terraform
+        run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
       - name: Terraform validate
-        working-directory: ./terraform/acceptance
+        working-directory: ./terraform
         run: terraform validate
 
       - name: Terraform plan
-        working-directory: ./terraform/acceptance
-        run: terraform plan -var-file="../config.tfvars" -out="tfplan"
+        working-directory: ./terraform
+        run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
       - name: Terraform apply
-        working-directory: ./terraform/acceptance
+        working-directory: ./terraform
         run: terraform apply "tfplan"
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
@@ -207,6 +211,8 @@ jobs:
   #   environment:
   #     name: Production
   #     url: https://func-cu-ticketless-flow-p.azurewebsites.net
+  #   env:
+  #     ENVIRONMENT: production
   #   needs:
   #     - run-deploy-a
   #   steps:
@@ -214,27 +220,27 @@ jobs:
   #     - uses: actions/checkout@v3
 
   #     - name: Terraform init
-  #       working-directory: ./terraform/production
-  #       run: terraform init
+  #       working-directory: ./terraform
+  #       run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
   #       env:
   #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
   #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
   #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
   #     - name: Terraform validate
-  #       working-directory: ./terraform/production
+  #       working-directory: ./terraform
   #       run: terraform validate
 
   #     - name: Terraform plan
-  #       working-directory: ./terraform/production
-  #       run: terraform plan -var-file="../config.tfvars" -out="tfplan"
+  #       working-directory: ./terraform
+  #       run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
   #       env:
   #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
   #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
   #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
 
   #     - name: Terraform apply
-  #       working-directory: ./terraform/production
+  #       working-directory: ./terraform
   #       run: terraform apply "tfplan"
   #       env:
   #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
