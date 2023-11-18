@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Xtz.TicketlessFlowApp.Core.Generic;
 
 namespace Xtz.TicketlessFlowApp.Core.Extensions;
 
@@ -9,13 +10,9 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         HostBuilderContext hostBuilderContext)
     {
-        services.AddSingleton<ICorrelationIdGenerator, CorrelationIdGenerator>();
-
-        services.AddOptions<CorrelationGeneratorOptions>()
-            .BindConfiguration("CorrelationGenerator")
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
-
-        return services;
+        return services
+            .AddSingleton<ICorrelationIdGenerator, CorrelationIdGenerator>()
+            .AddXtzConfigSection<CorrelationGeneratorOptions>("CorrelationGenerator")
+            .AddXtzConfigSection<CoreConnectOptions>("CoreConnect");
     }
 }

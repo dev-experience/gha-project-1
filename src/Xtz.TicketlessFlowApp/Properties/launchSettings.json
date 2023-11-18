@@ -2,7 +2,10 @@
   "profiles": {
     "TicketlessFlowApp": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7246"
+      "commandLineArgs": "--port 7246",
+      "environmentVariables": {
+        "XTZ_CoreConnect__ApiKey": "ENV_VARIABLE",
+      }
     },
     "Docker": {
       "commandName": "Docker",
