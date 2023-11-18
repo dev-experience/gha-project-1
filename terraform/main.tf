@@ -1,7 +1,17 @@
+terraform {
+  required_providers {
+    arm2tf = {
+      source = "cloud-maker-ai/arm2tf"
+    }
+  }
+}
+
 provider "azurerm" {
   subscription_id = var.subscription_id
-  features {
-  }
+  features {}
+}
+
+data "azurerm_subscription" "current" {
 }
 
 locals {
@@ -11,58 +21,25 @@ locals {
   }
 }
 
-/*
-
-# locals {
-#   defaults = {
-#     project_name = "project-default"
-#     region_name  = "region-default"
-#   }
-# }
-
-locals {
-  development = {
-    Development = {
-      environment = "Development"
-    }
-  }
+resource "arm2tf_unique_string" "unique_base_name" {
+  input = [ data.azurerm_subscription.current.subscription_id, var.base_name ]
 }
-
-locals {
-  production = {
-    Production = {
-      environment = "Production"
-    }
-  }
-}
-
-locals {
-  workspaces = merge(local.development, local.production)
-  # workspace  = merge(local.defaults, local.workspaces[terraform.workspace])
-  workspace  = local.workspaces[terraform.workspace]
-}
-
-output "region_name" {
-  value = "${local.workspace["region_name"]}"
-}
-
-*/
 
 module "storage_account" {
   source              = "./modules/storage-account"
   resource_group_name = var.resource_group_name
   location            = var.location
-  base_name           = var.base_name
+  base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
 
   tags                = local.tags
 }
 
-module "application_insights" {
-  source              = "./modules/application-insights"
+module "monitoring" {
+  source              = "./modules/monitoring"
   resource_group_name = var.resource_group_name
   location            = var.location
-  base_name           = var.base_name
+  base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
 
   tags = local.tags
@@ -72,7 +49,7 @@ module "key_vault" {
   source              = "./modules/key-vault"
   resource_group_name = var.resource_group_name
   location            = var.location
-  base_name           = var.base_name
+  base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
 
   tags = local.tags
@@ -82,7 +59,7 @@ module "function_app" {
   source              = "./modules/function-app"
   resource_group_name = var.resource_group_name
   location            = var.location
-  base_name           = var.base_name
+  base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
 
   tags = local.tags
@@ -91,6 +68,16 @@ module "function_app" {
 
   storage_account_name       = module.storage_account.name
   storage_account_access_key = module.storage_account.access_key
+
+  docker_registry_url      = var.docker_registry_url
+  docker_registry_username = var.docker_registry_username
+  docker_registry_password = var.docker_registry_password
+
+  docker_image_namespace = var.docker_image_namespace
+  docker_image_name      = var.docker_image_name
+  docker_image_tag       = var.docker_image_tag
+
+  environment_variables = var.app_environment_variables
 
   depends_on = [ module.storage_account, module.application_insights, module.key_vault ]
 }

@@ -1,7 +1,3 @@
-module "constants" {
-  source = "../../constants"
-}
-
 variable "location" {
   type = object({
     location     = string

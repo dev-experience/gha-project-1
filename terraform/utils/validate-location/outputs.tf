@@ -1,3 +1,7 @@
+module "constants" {
+  source = "../../constants"
+}
+
 locals {
   location_slug = module.constants.regions[var.location.location].slug
 }

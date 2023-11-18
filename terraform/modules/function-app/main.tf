@@ -1,8 +1,11 @@
+data "azurerm_resource_group" "current" {
+  name     = var.resource_group_name
+}
+
 resource "azurerm_service_plan" "this" {
   name                = "asp-${local.location_slug}-${var.base_name}-${local.environment_slug}"
-  resource_group_name         = var.resource_group_name
-  location                    = var.location
-
+  resource_group_name = var.resource_group_name
+  location            = var.location
 
   sku_name = "B1"
   os_type  = "Linux"
@@ -10,20 +13,33 @@ resource "azurerm_service_plan" "this" {
   tags = var.tags
 }
 
-# resource "azurerm_storage_account" "application" {
-#   name                             = azurecaf_name.storage_account.result
-#   resource_group_name              = var.resource_group
-#   location                         = var.location
-#   account_tier                     = "Standard"
-#   account_replication_type         = "LRS"
-#   enable_https_traffic_only        = true
-#   allow_nested_items_to_be_public  = false
+locals {
+  current_resource_group_id = data.azurerm_resource_group.current.id
+  key_vault_secrets_user_role = "Key Vault Secrets User"
 
-#   tags = {
-#     "environment"      = var.environment
-#     "application-name" = var.application_name
-#   }
-# }
+  defaultAppSettings = {
+    # WEBSITE_RUN_FROM_PACKAGE    = "1"
+
+    AzureWebJobsStorage = "DefaultEndpointsProtocol=https;AccountName=${var.storage_account_name};AccountKey=${var.storage_account_access_key}"
+
+    # TODO: Double check
+    WEBSITE_WEBDEPLOY_USE_SCM           = true
+    # TODO: Inject environment
+    ASPNETCORE_ENVIRONMENT              = var.environment
+    FUNCTIONS_WORKER_RUNTIME            = "dotnet-isolated"
+    # TODO: Double check
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+
+
+    # # These are app specific environment variables
+
+    # "AZURE_STORAGE_ACCOUNT_NAME"  = var.azure_storage_account_name
+    # "AZURE_STORAGE_BLOB_ENDPOINT" = var.azure_storage_blob_endpoint
+    # "AZURE_STORAGE_ACCOUNT_KEY"   = var.azure_storage_account_key
+  }
+
+  app_settings = merge(defaultAppSettings, var.environment_variables)
+}
 
 resource "azurerm_linux_function_app" "this" {
   name                = "func-${local.location_slug}-${var.base_name}-${local.environment_slug}"
@@ -47,12 +63,11 @@ resource "azurerm_linux_function_app" "this" {
       # dotnet_version = "6.0"
 
       docker {
-        // TODO: Inject from parameters
-        registry_url = "ghcr.io"
-        registry_username = "dev-experience"
-        registry_password = "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"
-        image_name = "dev-experience/ticketless-flow-app"
-        image_tag = "latest"
+        registry_url = var.docker_registry_url
+        registry_username = var.docker_registry_username
+        registry_password = var.docker_registry_password
+        image_name = "${var.docker_image_namespace}/${var.docker_image_name}"
+        image_tag = var.docker_image_tag
       }
     }
   }
@@ -61,35 +76,7 @@ resource "azurerm_linux_function_app" "this" {
     type = "SystemAssigned"
   }
 
-  app_settings = {
-    # WEBSITE_RUN_FROM_PACKAGE    = "1"
-
-    AzureWebJobsStorage = "DefaultEndpointsProtocol=https;AccountName=${var.storage_account_name};AccountKey=${var.storage_account_access_key}"
-
-    # TODO: Double check
-    WEBSITE_WEBDEPLOY_USE_SCM           = true
-    # TODO: Inject environment
-    ASPNETCORE_ENVIRONMENT              = "Production"
-    FUNCTIONS_WORKER_RUNTIME            = "dotnet-isolated"
-    # TODO: Double check
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-
-
-    # # These are app specific environment variables
-
-    # "AZURE_STORAGE_ACCOUNT_NAME"  = var.azure_storage_account_name
-    # "AZURE_STORAGE_BLOB_ENDPOINT" = var.azure_storage_blob_endpoint
-    # "AZURE_STORAGE_ACCOUNT_KEY"   = var.azure_storage_account_key
-  }
-}
-
-data "azurerm_resource_group" "current" {
-  name     = var.resource_group_name
-}
-
-locals {
-  current_resource_group_id = data.azurerm_resource_group.current.id
-  key_vault_secrets_user_role = "Key Vault Secrets User"
+  app_settings = local.app_settings
 }
 
 resource "azurerm_role_assignment" "key_vault_secrets_user" {

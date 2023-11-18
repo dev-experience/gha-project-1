@@ -201,18 +201,25 @@ locals {
       "slug"         = "brse"
     }
   }
-  # regions_regex = "^(westeurope)$"
-  # regions_regex = "^(${concat(keys(local.regions), "|")})$"
-  regions_regex = "^(${join("|", keys(local.regions))})$"
-}
 
-output "environment_slugs" {
-  value = {
+  regions_regex = "^(${join("|", keys(local.regions))})$"
+  
+  environment_slugs = {
     Development = "d"
     Test        = "t"
     Acceptance  = "a"
     Production  = "p"
   }
+
+  allowed_environments = keys(local.environment_slugs)
+}
+
+output "allowed_environments" {
+  value = local.allowed_environments
+}
+
+output "environment_slugs" {
+  value = local.environment_slugs
 }
 
 output "regions" {
@@ -221,4 +228,8 @@ output "regions" {
 
 output "regions_regex" {
   value = local.regions_regex
+}
+
+output "uuid_regex" {
+  value = "^[0-9A-Fa-f]{8}(-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
 }
