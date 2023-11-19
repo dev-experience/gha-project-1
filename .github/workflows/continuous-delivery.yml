@@ -197,12 +197,12 @@ jobs:
         uses: azure/login@v1
         with:
           creds: |
-            '{\
-                "tenantId": "${{ vars.ARM_TENANT_ID }}",\
-                "subscriptionId": "${{ steps.terraform_apply_t.outputs.subscription_id }}",\
-                "clientId": "${{ vars.ARM_CLIENT_ID }}",\
-                "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}"\
-              }'
+            {
+              "tenantId": "${{ vars.ARM_TENANT_ID }}",
+              "subscriptionId": "${{ steps.terraform_apply_t.outputs.subscription_id }}",
+              "clientId": "${{ vars.ARM_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}"
+            }
 
       - name: 'Run Azure Functions Container Action'
         uses: Azure/functions-container-action@v1
