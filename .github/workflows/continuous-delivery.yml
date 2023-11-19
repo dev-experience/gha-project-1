@@ -13,110 +13,110 @@ concurrency:
 
 jobs:
 
-  # docker-build:
-  #   name: CI - Build Docker image
-  #   if: github.ref != 'refs/heads/main'
-  #   runs-on: ubuntu-latest
-  #   steps:
+  docker-build:
+    name: CI - Build Docker image
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
 
-  #     - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-  #     - name: Build the Docker image
-  #       working-directory: ./src
-  #       run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ticketless-flow-app:$(date +%s) --tag ticketless-flow-app:latest
+      - name: Build the Docker image
+        working-directory: ./src
+        run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ticketless-flow-app:$(date +%s) --tag ticketless-flow-app:latest
 
-  # run-unit-tests:
-  #   name: CI - Run Unit Tests
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     checks: write
-  #     contents: write
-  #     pull-requests: write
-  #   steps:
+  run-unit-tests:
+    name: CI - Run Unit Tests
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: write
+      pull-requests: write
+    steps:
 
-  #     - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-  #     - name: Run Unit Tests
-  #       working-directory: ./src
-  #       run: |
-  #         docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
-  #         mkdir test_results
-  #         docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-unit-tests:latest
+      - name: Run Unit Tests
+        working-directory: ./src
+        run: |
+          docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
+          mkdir test_results
+          docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-unit-tests:latest
 
-  #     - name: Create test report
-  #       uses: dorny/test-reporter@v1
-  #       if: ${{ !cancelled() }}
-  #       with:
-  #         name: Unit Tests report
-  #         path: "./src/test_results/*.trx"
-  #         reporter: dotnet-trx
-  #         fail-on-error: true
+      - name: Create test report
+        uses: dorny/test-reporter@v1
+        if: ${{ !cancelled() }}
+        with:
+          name: Unit Tests report
+          path: "./src/test_results/*.trx"
+          reporter: dotnet-trx
+          fail-on-error: true
 
-  # run-integration-tests:
-  #   name: CI - Run Integration Tests
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     checks: write
-  #     contents: write
-  #     pull-requests: write
-  #   steps:
+  run-integration-tests:
+    name: CI - Run Integration Tests
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: write
+      pull-requests: write
+    steps:
 
-  #     - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-  #     - name: Run Integration Tests
-  #       working-directory: ./src
-  #       run: |
-  #         docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
-  #         mkdir test_results
-  #         docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-integration-tests:latest
+      - name: Run Integration Tests
+        working-directory: ./src
+        run: |
+          docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
+          mkdir test_results
+          docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-integration-tests:latest
 
-  #     - name: Create test report
-  #       uses: dorny/test-reporter@v1
-  #       if: ${{ !cancelled() }}
-  #       with:
-  #         name: Integration Tests report
-  #         path: "./src/test_results/*.trx"
-  #         reporter: dotnet-trx
-  #         fail-on-error: true
+      - name: Create test report
+        uses: dorny/test-reporter@v1
+        if: ${{ !cancelled() }}
+        with:
+          name: Integration Tests report
+          path: "./src/test_results/*.trx"
+          reporter: dotnet-trx
+          fail-on-error: true
 
-  # docker-build-and-push:
-  #   name: CI - Build and push Docker image
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   needs:
-  #     - run-unit-tests
-  #     - run-integration-tests
-  #   # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-  #   permissions:
-  #     contents: read
-  #     packages: write
-  #   steps:
+  docker-build-and-push:
+    name: CI - Build and push Docker image
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - run-unit-tests
+      - run-integration-tests
+    # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+    permissions:
+      contents: read
+      packages: write
+    steps:
 
-  #     - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-  #     - name: Build Docker image
-  #       working-directory: ./src
-  #       run: |
-  #         docker build . \
-  #           --build-arg "APP_NAME='Ticketless Flow App'" \
-  #           --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
-  #           --tag ticketless-flow-app:$(date +%s) \
-  #           --tag ticketless-flow-app:latest
+      - name: Build Docker image
+        working-directory: ./src
+        run: |
+          docker build . \
+            --build-arg "APP_NAME='Ticketless Flow App'" \
+            --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
+            --tag ticketless-flow-app:$(date +%s) \
+            --tag ticketless-flow-app:latest
 
-  #     - name: Login to GitHub Container Registry
-  #       uses: docker/login-action@v2
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ github.actor }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: Push Docker image
-  #       run: |
-  #         docker tag ticketless-flow-app:latest ghcr.io/dev-experience/ticketless-flow-app:latest
-  #         docker push ghcr.io/dev-experience/ticketless-flow-app:latest
+      - name: Push Docker image
+        run: |
+          docker tag ticketless-flow-app:latest ghcr.io/dev-experience/ticketless-flow-app:latest
+          docker push ghcr.io/dev-experience/ticketless-flow-app:latest
 
-  #     - name: Inspect Docker image
-  #       run: docker inspect ghcr.io/dev-experience/ticketless-flow-app:latest
+      - name: Inspect Docker image
+        run: docker inspect ghcr.io/dev-experience/ticketless-flow-app:latest
 
   run-deploy-t:
     name: CD - T - Deploy
@@ -125,8 +125,8 @@ jobs:
     environment:
       name: Test
       url: "${{ steps.terraform_apply_t.outputs.appUrl }}/api/health"
-    # needs:
-    #   - docker-build-and-push
+    needs:
+      - docker-build-and-push
     env:
       ENVIRONMENT: 1_test
     steps:
@@ -176,96 +176,118 @@ jobs:
           echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
 
-  # run-deploy-a:
-  #   name: CD - A - Deploy
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   environment:
-  #     name: Acceptance
-  #     # url: https://func-cu-ticketless-flow-a.azurewebsites.net/api/health
-  #   needs:
-  #     - run-deploy-t
-  #   env:
-  #     ENVIRONMENT: 2_acceptance
-  #   steps:
+  run-deploy-a:
+    name: CD - A - Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: Acceptance
+      url: "${{ steps.terraform_apply_a.outputs.appUrl }}/api/health"
+    needs:
+      - run-deploy-t
+    env:
+      ENVIRONMENT: 2_acceptance
+    steps:
 
-  #     - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-  #     - name: Terraform init
-  #       working-directory: ./terraform
-  #       env:
-  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #       run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
+      - name: Terraform init
+        working-directory: ./terraform
+        env:
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
 
-  #     - name: Terraform validate
-  #       working-directory: ./terraform
-  #       run: terraform validate
+      - name: Terraform validate
+        working-directory: ./terraform
+        run: terraform validate
 
-  #     - name: Terraform plan
-  #       working-directory: ./terraform
-  #       env:
-  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #         TF_VAR_docker_registry_url: ghcr.io
-  #         TF_VAR_docker_registry_username: ${{ github.actor }}
-  #         TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
-  #         TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
-  #       run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
+      - name: Terraform plan
+        working-directory: ./terraform
+        env:
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_username: ${{ github.actor }}
+          TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
+        run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
-  #     - name: Terraform apply
-  #       working-directory: ./terraform
-  #       env:
-  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #       run: terraform apply "tfplan"
+      - name: Terraform apply
+        id: terraform_apply_a
+        working-directory: ./terraform
+        env:
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        run: |
+          terraform apply "tfplan"
 
-  # run-deploy-p:
-  #   name: CD - P - Deploy
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   environment:
-  #     name: Production
-  #     # url: https://func-cu-ticketless-flow-p.azurewebsites.net/api/health
-  #   env:
-  #     ENVIRONMENT: 3_production
-  #   needs:
-  #     - run-deploy-a
-  #   steps:
+          resourceGroupPortalUrl=$(terraform output -raw resource_group_portal_url)
+          echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
 
-  #     - uses: actions/checkout@v3
+          appUrl=$(terraform output -raw app_url)
+          echo "appUrl = '${appUrl}'"
 
-  #     - name: Terraform init
-  #       working-directory: ./terraform
-  #       env:
-  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #       run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
+          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+          echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
 
-  #     - name: Terraform validate
-  #       working-directory: ./terraform
-  #       run: terraform validate
+  run-deploy-p:
+    name: CD - P - Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: Production
+      url: "${{ steps.terraform_apply_p.outputs.appUrl }}/api/health"
+    env:
+      ENVIRONMENT: 3_production
+    needs:
+      - run-deploy-a
+    steps:
 
-  #     - name: Terraform plan
-  #       working-directory: ./terraform
-  #       env:
-  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #         TF_VAR_docker_registry_url: ghcr.io
-  #         TF_VAR_docker_registry_username: ${{ github.actor }}
-  #         TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
-  #         TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
-  #       run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
+      - uses: actions/checkout@v3
 
-  #     - name: Terraform apply
-  #       working-directory: ./terraform
-  #       env:
-  #         ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
-  #         ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #       run: terraform apply "tfplan"
+      - name: Terraform init
+        working-directory: ./terraform
+        env:
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
+
+      - name: Terraform validate
+        working-directory: ./terraform
+        run: terraform validate
+
+      - name: Terraform plan
+        working-directory: ./terraform
+        env:
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_username: ${{ github.actor }}
+          TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
+        run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
+
+      - name: Terraform apply
+        id: terraform_apply_p
+        working-directory: ./terraform
+        env:
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        run: |
+          terraform apply "tfplan"
+
+          resourceGroupPortalUrl=$(terraform output -raw resource_group_portal_url)
+          echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
+
+          appUrl=$(terraform output -raw app_url)
+          echo "appUrl = '${appUrl}'"
+
+          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+          echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
