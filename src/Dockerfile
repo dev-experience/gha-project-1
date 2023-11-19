@@ -28,9 +28,11 @@ CMD dotnet test './Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.
 FROM base AS final
 ARG APP_NAME
 ARG REPOSITORY_URL
+ARG GITHUB_SHA
 LABEL org.opencontainers.image.description=${APP_NAME}
 LABEL org.opencontainers.image.source=${REPOSITORY_URL}
 WORKDIR /home/site/wwwroot
 COPY --from=publish /app/publish .
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
-    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
+    GITHUB_SHA=${GITHUB_SHA}
