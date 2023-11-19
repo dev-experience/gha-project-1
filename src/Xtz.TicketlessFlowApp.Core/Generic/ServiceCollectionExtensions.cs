@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Xtz.TicketlessFlowApp.Core.Generic;
 
@@ -9,7 +9,11 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddOptions<AppOptions>()
-            .Configure(x => x.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+            .Configure(x =>
+            {
+                x.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                x.BuildTimestamp = File.GetCreationTime(Assembly.GetExecutingAssembly().Location).ToUniversalTime();
+            });
 
         return services;
     }
