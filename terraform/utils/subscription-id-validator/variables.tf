@@ -7,6 +7,6 @@ variable "input" {
 
   validation {
     condition     = can(regex(var.input.regex, var.input.value))
-    error_message = "Invalid location, only valid Azure Regions are allowed"
+    error_message = "Invalid Azure Subscription ID"
   }
 }
