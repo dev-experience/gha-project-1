@@ -138,14 +138,6 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: Az CLI login
-        uses: azure/login@v1
-        with:
-          # tenant-id: ${{ vars.ARM_TENANT_ID }}
-          # client-id: ${{ vars.ARM_CLIENT_ID }}
-          allow-no-subscriptions: true
-          creds: '{ "clientId": "${{ vars.ARM_CLIENT_ID }}", "tenantId": "${{ vars.ARM_TENANT_ID }}", "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}" }'
-
       - name: Terraform init
         working-directory: ./terraform
         env:
@@ -204,16 +196,20 @@ jobs:
       - name: Az CLI login
         uses: azure/login@v1
         with:
-          tenant-id: ${{ vars.ARM_TENANT_ID }}
-          client-id: ${{ vars.ARM_CLIENT_ID }}
-          subscription-id: ${{ steps.terraform_apply_t.outputs.subscription_id }}
-          creds: ${{ secrets.ARM_CLIENT_SECRET }}
+          creds: |
+            '{\
+                "tenantId": "${{ vars.ARM_TENANT_ID }}",\
+                "subscriptionId": "${{ steps.terraform_apply_t.outputs.subscription_id }}",\
+                "clientId": "${{ vars.ARM_CLIENT_ID }}",\
+                "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}"\
+              }'
 
       - name: 'Run Azure Functions Container Action'
         uses: Azure/functions-container-action@v1
         with:
           app-name: ${{ steps.terraform_apply_t.outputs.appName }}
           image: ${{ env.DOCKER_REGISTRY_URL }}/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+
   run-deploy-a:
     name: CD - A - Deploy
     runs-on: ubuntu-latest
