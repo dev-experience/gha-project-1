@@ -176,6 +176,9 @@ jobs:
           echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
           echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
 
+          subscriptionId=$(terraform output -raw subscription_id)
+          echo "subscriptionId = '${subscriptionId}'"
+
           appName=$(terraform output -raw app_name)
           echo "appName = '${appName}'"
 
@@ -185,9 +188,17 @@ jobs:
           # appWebhookUrl=$(terraform output -raw app_webhook_url)
           # echo "appWebhookUrl = '${appWebhookUrl}'"
 
-          # echo "appWebhookUrl=${appWebhookUrl}" >> "$GITHUB_OUTPUT"
+          echo "subscriptionId=${subscriptionId}" >> "$GITHUB_OUTPUT"
           echo "appName=${appName}" >> "$GITHUB_OUTPUT"
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
+          # echo "appWebhookUrl=${appWebhookUrl}" >> "$GITHUB_OUTPUT"
+
+      - name: Az CLI login
+        uses: azure/login@v1
+        with:
+          tenant-id: ${{ vars.ARM_TENANT_ID }}
+          client-id: ${{ vars.ARM_CLIENT_ID }}
+          subscription-id: ${{ steps.terraform_apply_t.outputs.subscription_id }}
 
       - name: 'Run Azure Functions Container Action'
         uses: Azure/functions-container-action@v1
