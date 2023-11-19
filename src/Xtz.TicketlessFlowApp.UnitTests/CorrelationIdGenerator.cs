@@ -29,6 +29,56 @@ namespace Xtz.TicketlessFlowApp.UnitTests
                 result.Should().NotBeEmpty();
                 result.Should().StartWith("TEST");
             }
+
+            [Fact]
+            public void Success1()
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
+
+            [Fact]
+            public void Success2()
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
+
+            [Fact]
+            public void Success3()
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
+
+            [Fact]
+            public void Success4()
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
+
+            [Fact]
+            public void Success5()
+            {
+                // Arrange
+
+                // Act
+
+                // Assert
+            }
         }
     }
 }
