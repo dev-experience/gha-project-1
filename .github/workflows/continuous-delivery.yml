@@ -144,7 +144,7 @@ jobs:
           tenant-id: ${{ vars.ARM_TENANT_ID }}
           client-id: ${{ vars.ARM_CLIENT_ID }}
           allow-no-subscriptions: true
-          creds: '{ "password": "${{ secrets.ARM_CLIENT_SECRET }}" }'
+          creds: '{ "appId": "${{ vars.ARM_CLIENT_ID }}", "tenant": "${{ vars.ARM_TENANT_ID }}", "password": "${{ secrets.ARM_CLIENT_SECRET }}" }'
 
       - name: Terraform init
         working-directory: ./terraform
