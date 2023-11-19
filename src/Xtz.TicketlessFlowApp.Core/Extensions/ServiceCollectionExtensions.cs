@@ -11,8 +11,11 @@ public static class ServiceCollectionExtensions
         HostBuilderContext hostBuilderContext)
     {
         return services
+            .AddAppOptions()
+
             .AddSingleton<ICorrelationIdGenerator, CorrelationIdGenerator>()
             .AddXtzConfigSection<CorrelationGeneratorOptions>("CorrelationGenerator")
+
             .AddXtzConfigSection<CoreConnectOptions>("CoreConnect");
     }
 }
