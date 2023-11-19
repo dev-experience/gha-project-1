@@ -80,6 +80,7 @@ module "function_app" {
   environment_variables = {
     # TODO: Enable once Key Vault secret is created via Azure Portal
     "XTZ_CoreConnect__ApiKey" = "@Microsoft.KeyVault(SecretUri=${module.key_vault.uri}secrets/XTZ-CoreConnect-ApiKey/)"
+    "XTZ_CorrelationGenerator__Prefix" = "TicketlessFlow"
   }
 
   depends_on = [ module.storage_account, module.monitoring, module.key_vault ]
