@@ -141,9 +141,9 @@ jobs:
       - name: Az CLI login
         uses: azure/login@v1
         with:
-          tenant-id: ${{ vars.ARM_TENANT_ID }}
-          client-id: ${{ vars.ARM_CLIENT_ID }}
-          allow-no-subscriptions: true
+          # tenant-id: ${{ vars.ARM_TENANT_ID }}
+          # client-id: ${{ vars.ARM_CLIENT_ID }}
+          # allow-no-subscriptions: true
           creds: '{ "appId": "${{ vars.ARM_CLIENT_ID }}", "tenant": "${{ vars.ARM_TENANT_ID }}", "password": "${{ secrets.ARM_CLIENT_SECRET }}" }'
 
       - name: Terraform init
