@@ -174,11 +174,19 @@ jobs:
 
           resourceGroupPortalUrl=$(terraform output -raw resource_group_portal_url)
           echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
+          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+
+          appName=$(terraform output -raw app_name)
+          echo "appName = '${appName}'"
 
           appUrl=$(terraform output -raw app_url)
           echo "appUrl = '${appUrl}'"
 
-          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+          appWebhookUrl=$(terraform output -raw app_webhook_url)
+          echo "appWebhookUrl = '${appWebhookUrl}'"
+
+          echo "appWebhookUrl=${appWebhookUrl}" >> "$GITHUB_OUTPUT"
+          echo "appName=${appName}" >> "$GITHUB_OUTPUT"
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
 
   run-deploy-a:
