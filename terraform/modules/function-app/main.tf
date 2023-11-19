@@ -14,6 +14,8 @@ resource "azurerm_service_plan" "this" {
 }
 
 locals {
+  azure_functions_app_name = "func-${var.location_slug}-${var.base_name}-${var.environment_slug}"
+
   current_resource_group_id = data.azurerm_resource_group.current.id
   key_vault_secrets_user_role = "Key Vault Secrets User"
 
@@ -34,7 +36,7 @@ locals {
 }
 
 resource "azurerm_linux_function_app" "this" {
-  name                        = "func-${var.location_slug}-${var.base_name}-${var.environment_slug}"
+  name                        = local.azure_functions_app_name
   resource_group_name         = var.resource_group_name
   location                    = var.location
   service_plan_id             = azurerm_service_plan.this.id
@@ -77,4 +79,8 @@ resource "azurerm_role_assignment" "key_vault_secrets_user" {
   description = "'${azurerm_linux_function_app.this.name}' is '${local.key_vault_secrets_user_role}' for '${local.current_resource_group_id}'"
 
   depends_on = [ azurerm_linux_function_app.this ]
+}
+
+locals {
+  azure_functions_app_webhook_url = "https://${azurerm_linux_function_app.this.site_credential.0.name}:${azurerm_linux_function_app.this.site_credential.0.password}@${azurerm_linux_function_app.this.name}.scm.azurewebsites.net/api/registry/webhook"
 }

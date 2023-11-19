@@ -14,6 +14,15 @@ output "resource_group_portal_url" {
   value = "https://portal.azure.com/#@${local.tenant_id}/resource${local.resource_group_id}/"
 }
 
+output "app_name" {
+  value = module.function_app.application_name
+}
+
 output "app_url" {
   value = module.function_app.application_url
 }
+
+# output "app_webhook_url" {
+#   value = module.function_app.application_webhook_url
+#   sensitive = true
+# }
