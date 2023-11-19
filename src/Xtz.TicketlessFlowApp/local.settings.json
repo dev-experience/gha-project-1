@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    //"AzureWebJobsFeatureFlags": "EnableHttpProxying"
+
+    "XTZ_CorrelationGenerator__Prefix": "TicketlessFlow",
+    "XTZ_CoreConnect__ApiKey": "local.settings.json SECRET"
+  },
+  "ConnectionStrings": {
+    "XTZ_KeyVaultUri": "https://DUMMY.URL"
+  }
+}
