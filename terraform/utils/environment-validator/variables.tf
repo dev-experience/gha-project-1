@@ -7,6 +7,6 @@ variable "input" {
 
   validation {
     condition     = contains(var.input.allowed_values, var.input.value)
-    error_message = "Invalid environment name, must be one of '${concat(var.input.allowed_values, "', '")}'"
+    error_message = "Invalid environment name, must be one of '${concat(keys(var.input.allowed_values), "', '")}'"
   }
 }

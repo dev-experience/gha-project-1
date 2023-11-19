@@ -3,7 +3,7 @@ module "constants" {
 }
 
 locals {
-  location_slug = module.constants.regions[var.location.value].slug
+  location_slug = module.constants.regions[var.input.value].slug
 }
 
 output "location_slug" {

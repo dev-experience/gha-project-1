@@ -38,7 +38,7 @@ locals {
     # "AZURE_STORAGE_ACCOUNT_KEY"   = var.azure_storage_account_key
   }
 
-  app_settings = merge(defaultAppSettings, var.environment_variables)
+  app_settings = merge(local.defaultAppSettings, var.environment_variables)
 }
 
 resource "azurerm_linux_function_app" "this" {

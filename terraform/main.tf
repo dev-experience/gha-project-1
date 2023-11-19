@@ -64,7 +64,7 @@ module "function_app" {
 
   tags = local.tags
 
-  application_insights_connection_string = module.application_insights.connection_string
+  application_insights_connection_string = module.monitoring.application_insights_connection_string
 
   storage_account_name       = module.storage_account.name
   storage_account_access_key = module.storage_account.access_key
@@ -82,5 +82,5 @@ module "function_app" {
     "XTZ_CoreConnect__ApiKey" = "@Microsoft.KeyVault(SecretUri=${module.key_vault.uri}/secrets/XTZ-CoreConnect-ApiKey/"
   }
 
-  depends_on = [ module.storage_account, module.application_insights, module.key_vault ]
+  depends_on = [ module.storage_account, module.monitoring, module.key_vault ]
 }
