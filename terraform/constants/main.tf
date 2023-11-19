@@ -204,22 +204,22 @@ locals {
 
   regions_regex = "^(${join("|", keys(local.regions))})$"
   
-  environment_slugs = {
+  environments = {
     Development = "d"
     Test        = "t"
     Acceptance  = "a"
     Production  = "p"
   }
 
-  allowed_environments = keys(local.environment_slugs)
+  allowed_environments = keys(local.environments)
+}
+
+output "environments" {
+  value = local.environments
 }
 
 output "allowed_environments" {
   value = local.allowed_environments
-}
-
-output "environment_slugs" {
-  value = local.environment_slugs
 }
 
 output "regions" {

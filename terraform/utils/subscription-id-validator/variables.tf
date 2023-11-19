@@ -1,6 +1,6 @@
 variable "input" {
   type = object({
-    value     = string
+    value = string
     regex = string
   })
   description = "The Azure Subscription ID"

@@ -3,7 +3,7 @@ module "constants" {
 }
 
 locals {
-  environment_slug = module.constants.allowed_environments[var.input.value].slug
+  environment_slug = module.constants.environments[var.input.value]
 }
 
 output "environment_slug" {
