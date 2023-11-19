@@ -167,11 +167,11 @@ jobs:
         run: |
           terraform apply "tfplan"
 
-          resourceGroupPortalUrl = terraform output resource_group_portal_url
+          resourceGroupPortalUrl=$(terraform output resource_group_portal_url)
           echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
 
-          appUrl = terraform output app_url
-          echo "resourceGroupPorappUrltalUrl = '${appUrl}'"
+          appUrl=$(terraform output app_url)
+          echo "appUrl = '${appUrl}'"
 
           echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
