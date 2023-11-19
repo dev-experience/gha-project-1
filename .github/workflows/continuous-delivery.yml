@@ -27,7 +27,7 @@ jobs:
 
       - name: Build the Docker image
         working-directory: ./src
-        run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} --tag ${DOCKER_IMAGE_NAME}:$(date +%s) --tag ${DOCKER_IMAGE_NAME}:latest
+        run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 
   run-unit-tests:
     name: CI - Run Unit Tests
@@ -104,6 +104,7 @@ jobs:
           docker build . \
             --build-arg "APP_NAME='Ticketless Flow App'" \
             --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
+            --build-arg "GITHUB_SHA='${GITHUB_SHA'" \
             --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} \
             --tag ${DOCKER_IMAGE_NAME}:$(date +%s) \
             --tag ${DOCKER_IMAGE_NAME}:latest
@@ -118,7 +119,8 @@ jobs:
       - name: Push Docker image
         run: |
           docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
-          docker push ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
+          docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:${GITHUB_SHA}
+          docker push --all-tags ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}
 
       - name: Inspect Docker image
         run: docker inspect ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
