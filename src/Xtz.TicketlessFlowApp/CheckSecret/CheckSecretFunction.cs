@@ -20,7 +20,7 @@ namespace Xtz.TicketlessFlowApp.CheckSecret
         }
 
         [Function(nameof(CheckSecretFunction))]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "check-secret")] HttpRequestData req)
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "check-secret")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
