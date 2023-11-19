@@ -124,7 +124,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: Test
-      url: https://func-cu-ticketless-flow-t.azurewebsites.net/api/health
+      url: "${{ steps.terraform_apply_t.outputs.appUrl }}/api/health"
     needs:
       - docker-build-and-push
     env:
@@ -158,12 +158,23 @@ jobs:
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
       - name: Terraform apply
+        id: terraform_apply_t
         working-directory: ./terraform
         env:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-        run: terraform apply "tfplan"
+        run: |
+          terraform apply "tfplan"
+
+          resourceGroupPortalUrl = terraform output resource_group_portal_url
+          echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
+
+          appUrl = terraform output app_url
+          echo "resourceGroupPorappUrltalUrl = '${appUrl}'"
+
+          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+          echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
 
   run-deploy-a:
     name: CD - A - Deploy
