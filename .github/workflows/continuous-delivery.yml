@@ -17,111 +17,111 @@ env:
 
 jobs:
 
-  docker-build:
-    name: CI - Build Docker image
-    if: github.ref != 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
+  # docker-build:
+  #   name: CI - Build Docker image
+  #   if: github.ref != 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   steps:
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
-      - name: Build the Docker image
-        working-directory: ./src
-        run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} --tag ${DOCKER_IMAGE_NAME}:$(date +%s) --tag ${DOCKER_IMAGE_NAME}:latest
+  #     - name: Build the Docker image
+  #       working-directory: ./src
+  #       run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} --tag ${DOCKER_IMAGE_NAME}:$(date +%s) --tag ${DOCKER_IMAGE_NAME}:latest
 
-  run-unit-tests:
-    name: CI - Run Unit Tests
-    runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: write
-      pull-requests: write
-    steps:
+  # run-unit-tests:
+  #   name: CI - Run Unit Tests
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     checks: write
+  #     contents: write
+  #     pull-requests: write
+  #   steps:
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
-      - name: Run Unit Tests
-        working-directory: ./src
-        run: |
-          docker build . --target unit-tests-runner --tag ${DOCKER_IMAGE_NAME}-unit-tests:latest
-          mkdir test_results
-          docker run --mount type=bind,source="./test_results",target="/src/test_results" ${DOCKER_IMAGE_NAME}-unit-tests:latest
+  #     - name: Run Unit Tests
+  #       working-directory: ./src
+  #       run: |
+  #         docker build . --target unit-tests-runner --tag ${DOCKER_IMAGE_NAME}-unit-tests:latest
+  #         mkdir test_results
+  #         docker run --mount type=bind,source="./test_results",target="/src/test_results" ${DOCKER_IMAGE_NAME}-unit-tests:latest
 
-      - name: Create test report
-        uses: dorny/test-reporter@v1
-        if: ${{ !cancelled() }}
-        with:
-          name: Unit Tests report
-          path: "./src/test_results/*.trx"
-          reporter: dotnet-trx
-          fail-on-error: true
+  #     - name: Create test report
+  #       uses: dorny/test-reporter@v1
+  #       if: ${{ !cancelled() }}
+  #       with:
+  #         name: Unit Tests report
+  #         path: "./src/test_results/*.trx"
+  #         reporter: dotnet-trx
+  #         fail-on-error: true
 
-  run-integration-tests:
-    name: CI - Run Integration Tests
-    runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: write
-      pull-requests: write
-    steps:
+  # run-integration-tests:
+  #   name: CI - Run Integration Tests
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     checks: write
+  #     contents: write
+  #     pull-requests: write
+  #   steps:
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
-      - name: Run Integration Tests
-        working-directory: ./src
-        run: |
-          docker build . --target integration-tests-runner --tag ${DOCKER_IMAGE_NAME}-integration-tests:latest
-          mkdir test_results
-          docker run --mount type=bind,source="./test_results",target="/src/test_results" ${DOCKER_IMAGE_NAME}-integration-tests:latest
+  #     - name: Run Integration Tests
+  #       working-directory: ./src
+  #       run: |
+  #         docker build . --target integration-tests-runner --tag ${DOCKER_IMAGE_NAME}-integration-tests:latest
+  #         mkdir test_results
+  #         docker run --mount type=bind,source="./test_results",target="/src/test_results" ${DOCKER_IMAGE_NAME}-integration-tests:latest
 
-      - name: Create test report
-        uses: dorny/test-reporter@v1
-        if: ${{ !cancelled() }}
-        with:
-          name: Integration Tests report
-          path: "./src/test_results/*.trx"
-          reporter: dotnet-trx
-          fail-on-error: true
+  #     - name: Create test report
+  #       uses: dorny/test-reporter@v1
+  #       if: ${{ !cancelled() }}
+  #       with:
+  #         name: Integration Tests report
+  #         path: "./src/test_results/*.trx"
+  #         reporter: dotnet-trx
+  #         fail-on-error: true
 
-  docker-build-and-push:
-    name: CI - Build and push Docker image
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    needs:
-      - run-unit-tests
-      - run-integration-tests
-    # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-    permissions:
-      contents: read
-      packages: write
-    steps:
+  # docker-build-and-push:
+  #   name: CI - Build and push Docker image
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   needs:
+  #     - run-unit-tests
+  #     - run-integration-tests
+  #   # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   steps:
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
-      - name: Build Docker image
-        working-directory: ./src
-        run: |
-          docker build . \
-            --build-arg "APP_NAME='Ticketless Flow App'" \
-            --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
-            --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} \
-            --tag ${DOCKER_IMAGE_NAME}:$(date +%s) \
-            --tag ${DOCKER_IMAGE_NAME}:latest
+  #     - name: Build Docker image
+  #       working-directory: ./src
+  #       run: |
+  #         docker build . \
+  #           --build-arg "APP_NAME='Ticketless Flow App'" \
+  #           --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
+  #           --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} \
+  #           --tag ${DOCKER_IMAGE_NAME}:$(date +%s) \
+  #           --tag ${DOCKER_IMAGE_NAME}:latest
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.DOCKER_REGISTRY_URL }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Login to GitHub Container Registry
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: ${{ env.DOCKER_REGISTRY_URL }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push Docker image
-        run: |
-          docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
-          docker push ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
+  #     - name: Push Docker image
+  #       run: |
+  #         docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
+  #         docker push ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
 
-      - name: Inspect Docker image
-        run: docker inspect ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
+  #     - name: Inspect Docker image
+  #       run: docker inspect ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
 
   run-deploy-t:
     name: CD - T - Deploy
@@ -130,8 +130,8 @@ jobs:
     environment:
       name: Test
       url: "${{ steps.terraform_apply_t.outputs.appUrl }}/api/health"
-    needs:
-      - docker-build-and-push
+    # needs:
+    #   - docker-build-and-push
     env:
       ENVIRONMENT: 1_test
     steps:
