@@ -24,18 +24,10 @@ locals {
 
     # TODO: Double check
     WEBSITE_WEBDEPLOY_USE_SCM           = true
-    # TODO: Inject environment
     ASPNETCORE_ENVIRONMENT              = var.environment
     FUNCTIONS_WORKER_RUNTIME            = "dotnet-isolated"
     # TODO: Double check
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-
-
-    # # These are app specific environment variables
-
-    # "AZURE_STORAGE_ACCOUNT_NAME"  = var.azure_storage_account_name
-    # "AZURE_STORAGE_BLOB_ENDPOINT" = var.azure_storage_blob_endpoint
-    # "AZURE_STORAGE_ACCOUNT_KEY"   = var.azure_storage_account_key
   }
 
   app_settings = merge(local.defaultAppSettings, var.environment_variables)
@@ -60,8 +52,6 @@ resource "azurerm_linux_function_app" "this" {
     application_insights_connection_string = var.application_insights_connection_string
 
     application_stack {
-      # dotnet_version = "6.0"
-
       docker {
         registry_url = var.docker_registry_url
         registry_username = var.docker_registry_username

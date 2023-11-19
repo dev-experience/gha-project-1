@@ -78,7 +78,8 @@ module "function_app" {
   docker_image_tag       = var.docker_image_tag
 
   environment_variables = {
-    # TODO: Enable once Key Vault secret is created via Azure Portal
+    # TODO: Disable before publishing liveProject
+    # Enable once Key Vault secret is created via Azure Portal
     "XTZ_CoreConnect__ApiKey" = "@Microsoft.KeyVault(SecretUri=${module.key_vault.uri}secrets/XTZ-CoreConnect-ApiKey/)"
     "XTZ_CorrelationGenerator__Prefix" = "TicketlessFlow"
   }
