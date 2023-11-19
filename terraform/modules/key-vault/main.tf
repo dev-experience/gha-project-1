@@ -2,7 +2,7 @@ data "azurerm_client_config" "current" {
 }
 
 resource "azurerm_key_vault" "this" {
-  name                = "kv-${local.location_slug}-${var.base_name}-${local.environment_slug}"
+  name                = "kv-${var.location_slug}-${var.base_name}-${var.environment_slug}"
   resource_group_name = var.resource_group_name
   location            = var.location
 
@@ -16,4 +16,3 @@ resource "azurerm_key_vault" "this" {
 
   tags = var.tags
 }
-

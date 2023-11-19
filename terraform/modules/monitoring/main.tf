@@ -1,5 +1,5 @@
 resource "azurerm_log_analytics_workspace" "this" {
-  name                = "log-${local.location_slug}-${var.base_name}-${local.environment_slug}"
+  name                = "log-${var.location_slug}-${var.base_name}-${var.environment_slug}"
   location            = var.location
   resource_group_name = var.resource_group_name
   sku                 = "PerGB2018"
@@ -9,7 +9,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 }
 
 resource "azurerm_application_insights" "this" {
-  name                = "appi-${local.location_slug}-${var.base_name}-${local.environment_slug}"
+  name                = "appi-${var.location_slug}-${var.base_name}-${var.environment_slug}"
   location            = var.location
   resource_group_name = var.resource_group_name
   application_type    = "web"

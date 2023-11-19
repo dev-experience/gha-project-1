@@ -4,11 +4,16 @@ module "constants" {
 
 variable "subscription_id" {
   type        = string
-  validation {
-    condition     = can(regex(module.constants.uuid_regex, var.subscription_id))
-    error_message = "Invalid subscription ID, must be a valid Azure subscription ID"
-  }
   description = "Subscription ID"
+}
+
+module "subscription_id_validator" {
+  source = "./utils/subscription-id-validator"
+
+  input = {
+    value = var.subscription_id
+    regex = module.constants.uuid_regex
+  }
 }
 
 variable "resource_group_name" {
@@ -19,16 +24,6 @@ variable "resource_group_name" {
 variable "base_name" {
   type        = string
   description = "Base name for all resources"
-}
-
-variable "environment" {
-  type        = string
-  description = "The environment (Development, Test, Acceptance, Production)"
-
-  validation {
-    condition = contains(module.constants.allowed_environments, var.environment)
-    error_message = "Invalid environment name, must be one of '${concat(module.constants.allowed_environments, "', '")}'"
-  }
 }
 
 variable "tag_business_unit" {
@@ -65,13 +60,4 @@ variable "docker_image_name" {
 variable "docker_image_tag" {
   type = string
   description = "Docker image tag"
-}
-
-variable "app_environment_variables" {
-  type = map(string)
-  description = "Application environment variables"
-}
-
-locals {
-  environment_slug = module.constants.environment_slugs[var.environment]
 }

@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    arm2tf = {
-      source = "cloud-maker-ai/arm2tf"
-    }
-  }
-}
-
 provider "azurerm" {
   subscription_id = var.subscription_id
   features {}
@@ -29,8 +21,10 @@ module "storage_account" {
   source              = "./modules/storage-account"
   resource_group_name = var.resource_group_name
   location            = var.location
+  location_slug       = local.location_slug
   base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
+  environment_slug    = local.environment_slug
 
   tags                = local.tags
 }
@@ -39,8 +33,10 @@ module "monitoring" {
   source              = "./modules/monitoring"
   resource_group_name = var.resource_group_name
   location            = var.location
+  location_slug       = local.location_slug
   base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
+  environment_slug    = local.environment_slug
 
   tags = local.tags
 }
@@ -49,8 +45,10 @@ module "key_vault" {
   source              = "./modules/key-vault"
   resource_group_name = var.resource_group_name
   location            = var.location
+  location_slug       = local.location_slug
   base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
+  environment_slug    = local.environment_slug
 
   tags = local.tags
 }
@@ -59,8 +57,10 @@ module "function_app" {
   source              = "./modules/function-app"
   resource_group_name = var.resource_group_name
   location            = var.location
+  location_slug       = local.location_slug
   base_name           = arm2tf_unique_string.unique_base_name.id
   environment         = var.environment
+  environment_slug    = local.environment_slug
 
   tags = local.tags
 
@@ -77,7 +77,10 @@ module "function_app" {
   docker_image_name      = var.docker_image_name
   docker_image_tag       = var.docker_image_tag
 
-  environment_variables = var.app_environment_variables
+  environment_variables = {
+    # TODO: Enable once Key Vault secret is created via Azure Portal
+    "XTZ_CoreConnect__ApiKey" = "@Microsoft.KeyVault(SecretUri=${module.key_vault.uri}/secrets/XTZ-CoreConnect-ApiKey/"
+  }
 
   depends_on = [ module.storage_account, module.application_insights, module.key_vault ]
 }

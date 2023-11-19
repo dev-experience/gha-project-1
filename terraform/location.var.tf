@@ -3,19 +3,15 @@ variable "location" {
   description = "The Azure region where resources should be created"
 }
 
-module "constants" {
-  source = "../../constants"
-}
+module "location_validator" {
+  source = "./utils/location-validator"
 
-module "validate_location" {
-  source = "../../utils/validate-location"
-
-  location = {
-    location = var.location
-    region_regex = module.constants.regions_regex
+  input = {
+    value = var.location
+    regex = module.constants.regions_regex
   }
 }
 
 locals {
-  location_slug = module.validate_location.location_slug
+  location_slug = module.location_validator.location_slug
 }

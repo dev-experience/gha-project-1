@@ -3,7 +3,7 @@ data "azurerm_resource_group" "current" {
 }
 
 resource "azurerm_service_plan" "this" {
-  name                = "asp-${local.location_slug}-${var.base_name}-${local.environment_slug}"
+  name                = "asp-${var.location_slug}-${var.base_name}-${var.environment_slug}"
   resource_group_name = var.resource_group_name
   location            = var.location
 
@@ -42,7 +42,7 @@ locals {
 }
 
 resource "azurerm_linux_function_app" "this" {
-  name                = "func-${local.location_slug}-${var.base_name}-${local.environment_slug}"
+  name                        = "func-${var.location_slug}-${var.base_name}-${var.environment_slug}"
   resource_group_name         = var.resource_group_name
   location                    = var.location
   service_plan_id             = azurerm_service_plan.this.id
