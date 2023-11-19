@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtz.TicketlessFlowApp.UnitTests", "Xtz.TicketlessFlowApp.UnitTests\Xtz.TicketlessFlowApp.UnitTests.csproj", "{8F5E8A08-2756-46E6-BFC0-3A798FB8F277}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtz.TicketlessFlowApp.UnitTests", "Xtz.TicketlessFlowApp.UnitTests\Xtz.TicketlessFlowApp.UnitTests.csproj", "{8F5E8A08-2756-46E6-BFC0-3A798FB8F277}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtz.TicketlessFlowApp", "Xtz.TicketlessFlowApp\Xtz.TicketlessFlowApp.csproj", "{CB2DA66D-5947-4AE7-9C50-AD204C0664F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtz.TicketlessFlowApp.IntegrationTests", "Xtz.TicketlessFlowApp.IntegrationTests\Xtz.TicketlessFlowApp.IntegrationTests.csproj", "{34B99A11-A528-4D70-9BCF-2F2CDEF17841}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtz.TicketlessFlowApp.IntegrationTests", "Xtz.TicketlessFlowApp.IntegrationTests\Xtz.TicketlessFlowApp.IntegrationTests.csproj", "{34B99A11-A528-4D70-9BCF-2F2CDEF17841}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtz.TicketlessFlowApp.Core", "Xtz.TicketlessFlowApp.Core\Xtz.TicketlessFlowApp.Core.csproj", "{F3112DDB-A085-43F8-AEB6-8AB74070E931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xtz.TicketlessFlowApp.Core", "Xtz.TicketlessFlowApp.Core\Xtz.TicketlessFlowApp.Core.csproj", "{F3112DDB-A085-43F8-AEB6-8AB74070E931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
