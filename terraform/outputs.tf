@@ -1,16 +1,13 @@
 data "azurerm_client_config" "current" {
 }
 
-data "azurerm_subscription" "current" {
-}
-
 data "azurerm_resource_group" "current" {
   name = var.resource_group_name
 }
 
 locals {
   tenant_id         = data.azurerm_client_config.current.tenant_id
-  subscription_id   = data.azurerm_subscription.current.id
+  subscription_id   = data.azurerm_subscription.current.subscription_id
   resource_group_id = data.azurerm_resource_group.current.id
 }
 
