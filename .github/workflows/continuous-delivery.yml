@@ -106,7 +106,7 @@ jobs:
             --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
             --build-arg "GITHUB_SHA='${GITHUB_SHA}'" \
             --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} \
-            --tag ${DOCKER_IMAGE_NAME}:$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+            --tag ${DOCKER_IMAGE_NAME}:$(date -u +"%Y-%m-%dT%H_%M_%SZ") \
             --tag ${DOCKER_IMAGE_NAME}:latest
 
       - name: Login to GitHub Container Registry
