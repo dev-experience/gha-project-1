@@ -182,10 +182,10 @@ jobs:
           appUrl=$(terraform output -raw app_url)
           echo "appUrl = '${appUrl}'"
 
-          appWebhookUrl=$(terraform output -raw app_webhook_url)
-          echo "appWebhookUrl = '${appWebhookUrl}'"
+          # appWebhookUrl=$(terraform output -raw app_webhook_url)
+          # echo "appWebhookUrl = '${appWebhookUrl}'"
 
-          echo "appWebhookUrl=${appWebhookUrl}" >> "$GITHUB_OUTPUT"
+          # echo "appWebhookUrl=${appWebhookUrl}" >> "$GITHUB_OUTPUT"
           echo "appName=${appName}" >> "$GITHUB_OUTPUT"
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
 
