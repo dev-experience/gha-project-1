@@ -152,10 +152,10 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_DOCKER_REGISTRY_URL: ghcr.io
-          TF_VAR_DOCKER_REGISTRY_USERNAME: ${{ github.actor }}
-          TF_VAR_DOCKER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          TF_VAR_DOCKER_IMAGE_NAMESPACE: ${{ github.repository_owner }}
+          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_username: ${{ github.actor }}
+          TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
 
       - name: Terraform apply
         working-directory: ./terraform
@@ -199,10 +199,10 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_DOCKER_REGISTRY_URL: ghcr.io
-          TF_VAR_DOCKER_REGISTRY_USERNAME: ${{ github.actor }}
-          TF_VAR_DOCKER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          TF_VAR_DOCKER_IMAGE_NAMESPACE: ${{ github.repository_owner }}
+          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_username: ${{ github.actor }}
+          TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
 
       - name: Terraform apply
         working-directory: ./terraform
@@ -246,10 +246,10 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_DOCKER_REGISTRY_URL: ghcr.io
-          TF_VAR_DOCKER_REGISTRY_USERNAME: ${{ github.actor }}
-          TF_VAR_DOCKER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          TF_VAR_DOCKER_IMAGE_NAMESPACE: ${{ github.repository_owner }}
+          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_username: ${{ github.actor }}
+          TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
+          TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
 
       - name: Terraform apply
         working-directory: ./terraform
