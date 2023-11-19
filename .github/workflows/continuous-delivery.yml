@@ -11,6 +11,10 @@ concurrency:
   group: ${{ github.workflow_ref }}
   cancel-in-progress: true
 
+env:
+  DOCKER_REGISTRY_URL: ghcr.io
+  DOCKER_IMAGE_NAME: ticketless-flow-app
+
 jobs:
 
   docker-build:
@@ -23,7 +27,7 @@ jobs:
 
       - name: Build the Docker image
         working-directory: ./src
-        run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ticketless-flow-app:$(date +%s) --tag ticketless-flow-app:latest
+        run: docker build . --build-arg REPOSITORY_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} --tag ${DOCKER_IMAGE_NAME}:$(date +%s) --tag ${DOCKER_IMAGE_NAME}:latest
 
   run-unit-tests:
     name: CI - Run Unit Tests
@@ -39,9 +43,9 @@ jobs:
       - name: Run Unit Tests
         working-directory: ./src
         run: |
-          docker build . --target unit-tests-runner --tag ticketless-flow-app-unit-tests:latest
+          docker build . --target unit-tests-runner --tag ${DOCKER_IMAGE_NAME}-unit-tests:latest
           mkdir test_results
-          docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-unit-tests:latest
+          docker run --mount type=bind,source="./test_results",target="/src/test_results" ${DOCKER_IMAGE_NAME}-unit-tests:latest
 
       - name: Create test report
         uses: dorny/test-reporter@v1
@@ -66,9 +70,9 @@ jobs:
       - name: Run Integration Tests
         working-directory: ./src
         run: |
-          docker build . --target integration-tests-runner --tag ticketless-flow-app-integration-tests:latest
+          docker build . --target integration-tests-runner --tag ${DOCKER_IMAGE_NAME}-integration-tests:latest
           mkdir test_results
-          docker run --mount type=bind,source="./test_results",target="/src/test_results" ticketless-flow-app-integration-tests:latest
+          docker run --mount type=bind,source="./test_results",target="/src/test_results" ${DOCKER_IMAGE_NAME}-integration-tests:latest
 
       - name: Create test report
         uses: dorny/test-reporter@v1
@@ -100,23 +104,24 @@ jobs:
           docker build . \
             --build-arg "APP_NAME='Ticketless Flow App'" \
             --build-arg "REPOSITORY_URL='${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}'" \
-            --tag ticketless-flow-app:$(date +%s) \
-            --tag ticketless-flow-app:latest
+            --tag ${DOCKER_IMAGE_NAME}:${GITHUB_SHA} \
+            --tag ${DOCKER_IMAGE_NAME}:$(date +%s) \
+            --tag ${DOCKER_IMAGE_NAME}:latest
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
+          registry: ${{ env.DOCKER_REGISTRY_URL }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Docker image
         run: |
-          docker tag ticketless-flow-app:latest ghcr.io/dev-experience/ticketless-flow-app:latest
-          docker push ghcr.io/dev-experience/ticketless-flow-app:latest
+          docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
+          docker push ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
 
       - name: Inspect Docker image
-        run: docker inspect ghcr.io/dev-experience/ticketless-flow-app:latest
+        run: docker inspect ${DOCKER_REGISTRY_URL}/${{ github.repository_owner }}/${DOCKER_IMAGE_NAME}:latest
 
   run-deploy-t:
     name: CD - T - Deploy
@@ -151,7 +156,7 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_url: ${{ env.DOCKER_REGISTRY_URL }}
           TF_VAR_docker_registry_username: ${{ github.actor }}
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
@@ -209,7 +214,7 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_url: ${{ env.DOCKER_REGISTRY_URL }}
           TF_VAR_docker_registry_username: ${{ github.actor }}
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
@@ -267,7 +272,7 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_docker_registry_url: ghcr.io
+          TF_VAR_docker_registry_url: ${{ env.DOCKER_REGISTRY_URL }}
           TF_VAR_docker_registry_username: ${{ github.actor }}
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
