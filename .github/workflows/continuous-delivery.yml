@@ -128,7 +128,7 @@ jobs:
     needs:
       - docker-build-and-push
     env:
-      ENVIRONMENT: 1_Test
+      ENVIRONMENT: 1_test
     steps:
 
       - uses: actions/checkout@v3
@@ -175,7 +175,7 @@ jobs:
     needs:
       - run-deploy-t
     env:
-      ENVIRONMENT: 2_Acceptance
+      ENVIRONMENT: 2_acceptance
     steps:
 
       - uses: actions/checkout@v3
@@ -220,7 +220,7 @@ jobs:
   #     name: Production
   #     url: https://func-cu-ticketless-flow-p.azurewebsites.net/api/health
   #   env:
-  #     ENVIRONMENT: 3_Production
+  #     ENVIRONMENT: 3_production
   #   needs:
   #     - run-deploy-a
   #   steps:
