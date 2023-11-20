@@ -75,7 +75,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success2()
+            public void Fails_WhenNoVenue()
             {
                 // Arrange
 
@@ -85,7 +85,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success3()
+            public void Fails_WhenEmptyInput()
             {
                 // Arrange
 
@@ -95,87 +95,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success4()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success5()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success6()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success7()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success8()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success9()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success10()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success11()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success12()
+            public void Fails_WhenInvalidInput()
             {
                 // Arrange
 
@@ -185,10 +105,10 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
         }
 
-        public class SyncTicketsData
+        public class SyncEventTicketsData
         {
             [Fact]
-            public void Success1()
+            public void Syncs()
             {
                 // Arrange
 
@@ -198,7 +118,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success2()
+            public void Fails_WhenWrongConfig()
             {
                 // Arrange
 
@@ -208,7 +128,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success3()
+            public void Fails_WhenEventDoesntExist()
             {
                 // Arrange
 
@@ -218,17 +138,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success4()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success5()
+            public void Syncs_WhenNoTickets()
             {
                 // Arrange
 
@@ -241,7 +151,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
         public class FinalizeEvent
         {
             [Fact]
-            public void Success1()
+            public void FinalizesEvent()
             {
                 // Arrange
 
@@ -251,7 +161,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success2()
+            public void Fails_WhenEmptyInput()
             {
                 // Arrange
 
@@ -261,7 +171,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success3()
+            public void Fails_WhenInvalidInput()
             {
                 // Arrange
 
@@ -271,7 +181,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success4()
+            public void Fails_WhenEventDoesntExist()
             {
                 // Arrange
 
@@ -281,7 +191,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success5()
+            public void Fails_WhenEventAlreadyFinalized()
             {
                 // Arrange
 
