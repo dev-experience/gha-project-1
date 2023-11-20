@@ -13,7 +13,7 @@ concurrency:
 
 env:
   APP_TITLE: Ticketless Flow App
-  APP_DESCRIPTION: Serverless application Ticketless Flow App to connect terminals to Ticketless CoreConnect Service
+  APP_DESCRIPTION: Serverless application Ticketless Flow App to connect terminals to Ticketless CoreConnect Service.
   DOCKER_REGISTRY_URL: ghcr.io
   DOCKER_IMAGE_NAME: ticketless-flow-app
 
@@ -192,15 +192,11 @@ jobs:
           appUrl=$(terraform output -raw app_url)
           echo "appUrl = '${appUrl}'"
 
-          # appWebhookUrl=$(terraform output -raw app_webhook_url)
-          # echo "appWebhookUrl = '${appWebhookUrl}'"
-
           echo "subscriptionId=${subscriptionId}" >> "$GITHUB_OUTPUT"
           echo "appName=${appName}" >> "$GITHUB_OUTPUT"
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
-          # echo "appWebhookUrl=${appWebhookUrl}" >> "$GITHUB_OUTPUT"
 
-      - name: Az CLI login
+      - name: az login
         uses: azure/login@v1
         with:
           creds: |
@@ -211,7 +207,7 @@ jobs:
               "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}"
             }
 
-      - name: 'Run Azure Functions Container Action'
+      - name: Redeploy Azure Function app
         uses: Azure/functions-container-action@v1
         with:
           app-name: ${{ steps.terraform_apply_t.outputs.appName }}
@@ -268,12 +264,37 @@ jobs:
 
           resourceGroupPortalUrl=$(terraform output -raw resource_group_portal_url)
           echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
+          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+
+          subscriptionId=$(terraform output -raw subscription_id)
+          echo "subscriptionId = '${subscriptionId}'"
+
+          appName=$(terraform output -raw app_name)
+          echo "appName = '${appName}'"
 
           appUrl=$(terraform output -raw app_url)
           echo "appUrl = '${appUrl}'"
 
-          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+          echo "subscriptionId=${subscriptionId}" >> "$GITHUB_OUTPUT"
+          echo "appName=${appName}" >> "$GITHUB_OUTPUT"
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: |
+            {
+              "tenantId": "${{ vars.ARM_TENANT_ID }}",
+              "subscriptionId": "${{ steps.terraform_apply_a.outputs.subscriptionId }}",
+              "clientId": "${{ vars.ARM_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}"
+            }
+
+      - name: Redeploy Azure Function app
+        uses: Azure/functions-container-action@v1
+        with:
+          app-name: ${{ steps.terraform_apply_a.outputs.appName }}
+          image: ${{ env.DOCKER_REGISTRY_URL }}/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_NAME }}:latest
 
   run-deploy-p:
     name: CD - P - Deploy
@@ -326,9 +347,34 @@ jobs:
 
           resourceGroupPortalUrl=$(terraform output -raw resource_group_portal_url)
           echo "resourceGroupPortalUrl = '${resourceGroupPortalUrl}'"
+          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+
+          subscriptionId=$(terraform output -raw subscription_id)
+          echo "subscriptionId = '${subscriptionId}'"
+
+          appName=$(terraform output -raw app_name)
+          echo "appName = '${appName}'"
 
           appUrl=$(terraform output -raw app_url)
           echo "appUrl = '${appUrl}'"
 
-          echo "Deployment done to the RG: ${resourceGroupPortalUrl}" > $GITHUB_STEP_SUMMARY
+          echo "subscriptionId=${subscriptionId}" >> "$GITHUB_OUTPUT"
+          echo "appName=${appName}" >> "$GITHUB_OUTPUT"
           echo "appUrl=${appUrl}" >> "$GITHUB_OUTPUT"
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: |
+            {
+              "tenantId": "${{ vars.ARM_TENANT_ID }}",
+              "subscriptionId": "${{ steps.terraform_apply_p.outputs.subscriptionId }}",
+              "clientId": "${{ vars.ARM_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}"
+            }
+
+      - name: Redeploy Azure Function app
+        uses: Azure/functions-container-action@v1
+        with:
+          app-name: ${{ steps.terraform_apply_p.outputs.appName }}
+          image: ${{ env.DOCKER_REGISTRY_URL }}/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_NAME }}:latest
