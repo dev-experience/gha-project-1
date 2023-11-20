@@ -105,7 +105,7 @@ jobs:
         run: |
           timestamp=$(date -u +"%Y-%m-%dT%H%M%SZ")
           docker build . \
-            --build-arg "TIMESTAMP=${timestamp}" \
+            --build-arg "IMAGE_TIMESTAMP=${timestamp}" \
             --build-arg "GIT_COMMIT_SHA=${GITHUB_SHA}" \
             --build-arg "APP_TITLE=${APP_TITLE}" \
             --build-arg "APP_DESCRIPTION=${APP_DESCRIPTION}" \

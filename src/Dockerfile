@@ -31,13 +31,13 @@ CMD dotnet test './Xtz.TicketlessFlowApp.IntegrationTests/Xtz.TicketlessFlowApp.
 
 FROM base AS final
 
-ARG TIMESTAMP
+ARG IMAGE_TIMESTAMP
 ARG GIT_COMMIT_SHA
 ARG APP_TITLE
 ARG APP_DESCRIPTION
 ARG REPOSITORY_URL
 
-LABEL org.opencontainers.image.created=${TIMESTAMP}
+LABEL org.opencontainers.image.created=${IMAGE_TIMESTAMP}
 LABEL org.opencontainers.image.revision=${GIT_COMMIT_SHA}
 LABEL org.opencontainers.image.title=${APP_TITLE}
 LABEL org.opencontainers.image.description=${APP_DESCRIPTION}
@@ -47,4 +47,5 @@ WORKDIR /home/site/wwwroot
 COPY --from=publish /app/publish .
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
-    GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
+    GIT_COMMIT_SHA=${GIT_COMMIT_SHA} \
+    IMAGE_TIMESTAMP=${IMAGE_TIMESTAMP}

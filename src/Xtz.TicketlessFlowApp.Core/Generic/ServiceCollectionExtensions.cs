@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
             .Configure(x =>
             {
                 x.Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                x.BuildTimestamp = File.GetCreationTime(Assembly.GetExecutingAssembly().Location).ToUniversalTime();
+                x.ImageTimestamp = Environment.GetEnvironmentVariable("IMAGE_TIMESTAMP");
                 x.GitCommitSha = Environment.GetEnvironmentVariable("GIT_COMMIT_SHA");
             });
 

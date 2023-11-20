@@ -33,7 +33,7 @@ namespace Xtz.TicketlessFlowApp.HealthCheck
             {
                 Status = "OK",
                 Environment = _appOptions.Value.Environment,
-                BuildTimestamp = _appOptions.Value.BuildTimestamp,
+                ImageTimestamp = _appOptions.Value.ImageTimestamp,
                 GitCommitSha = _appOptions.Value.GitCommitSha,
                 CorrelationId = _correlationIdGenerator.Generate(),
             };
@@ -54,8 +54,8 @@ namespace Xtz.TicketlessFlowApp.HealthCheck
             [JsonPropertyName("environment")]
             public string? Environment { get; set; }
 
-            [JsonPropertyName("buildTimestamp")]
-            public DateTime BuildTimestamp { get; set; }
+            [JsonPropertyName("imageTimestamp")]
+            public string? ImageTimestamp { get; set; }
 
             [JsonPropertyName("gitCommitSha")]
             public string? GitCommitSha { get; set; }
