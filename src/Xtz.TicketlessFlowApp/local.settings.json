@@ -4,13 +4,12 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "ASPNETCORE_ENVIRONMENT": "Development",
-    "GITHUB_SHA": "LOCAL RUN",
+    "GIT_COMMIT_SHA": "LOCAL RUN",
     //"AzureWebJobsFeatureFlags": "EnableHttpProxying"
 
     "XTZ_CorrelationGenerator__Prefix": "TicketlessFlow",
     "XTZ_CoreConnect__ApiKey": "local.settings.json SECRET"
   },
   "ConnectionStrings": {
-    "XTZ_KeyVaultUri": "https://DUMMY.URL"
   }
 }

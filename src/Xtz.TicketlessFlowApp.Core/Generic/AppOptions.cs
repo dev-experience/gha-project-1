@@ -6,5 +6,5 @@ public class AppOptions
 
     public DateTime BuildTimestamp { get; set; }
 
-    public string GithubSha { get; set; }
+    public string GitCommitSha { get; set; }
 }
