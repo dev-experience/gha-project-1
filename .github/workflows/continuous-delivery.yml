@@ -159,8 +159,13 @@ jobs:
         run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
 
       - name: Terraform validate
+        id: terraform_validate_t
         working-directory: ./terraform
-        run: terraform validate
+        run: |
+          terraform validate
+
+          terraformTimestamp=$(date -u +"%Y-%m-%dT%H%M%SZ")
+          echo "terraformTimestamp=${terraformTimestamp}" >> "$GITHUB_OUTPUT"
 
       - name: Terraform plan
         working-directory: ./terraform
@@ -173,7 +178,7 @@ jobs:
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
           TF_VAR_git_commit_sha: ${{ github.sha }}
-          TF_VAR_terraform_timestamp: ${{ github.sha }}
+          TF_VAR_terraform_timestamp: ${{ steps.terraform_validate_t.outputs.terraformTimestamp }}
           TF_VAR_workflow_run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
@@ -245,8 +250,13 @@ jobs:
         run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
 
       - name: Terraform validate
+        id: terraform_validate_a
         working-directory: ./terraform
-        run: terraform validate
+        run: |
+          terraform validate
+
+          terraformTimestamp=$(date -u +"%Y-%m-%dT%H%M%SZ")
+          echo "terraformTimestamp=${terraformTimestamp}" >> "$GITHUB_OUTPUT"
 
       - name: Terraform plan
         working-directory: ./terraform
@@ -259,7 +269,7 @@ jobs:
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
           TF_VAR_git_commit_sha: ${{ github.sha }}
-          TF_VAR_terraform_timestamp: ${{ github.sha }}
+          TF_VAR_terraform_timestamp: ${{ steps.terraform_validate_a.outputs.terraformTimestamp }}
           TF_VAR_workflow_run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
@@ -331,8 +341,13 @@ jobs:
         run: terraform init -backend-config="./_env/$ENVIRONMENT.azurerm.tfbackend"
 
       - name: Terraform validate
+        id: terraform_validate_p
         working-directory: ./terraform
-        run: terraform validate
+        run: |
+          terraform validate
+
+          terraformTimestamp=$(date -u +"%Y-%m-%dT%H%M%SZ")
+          echo "terraformTimestamp=${terraformTimestamp}" >> "$GITHUB_OUTPUT"
 
       - name: Terraform plan
         working-directory: ./terraform
@@ -345,7 +360,7 @@ jobs:
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
           TF_VAR_git_commit_sha: ${{ github.sha }}
-          TF_VAR_terraform_timestamp: ${{ github.sha }}
+          TF_VAR_terraform_timestamp: ${{ steps.terraform_validate_p.outputs.terraformTimestamp }}
           TF_VAR_workflow_run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
