@@ -31,7 +31,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success1()
+            public void GeneratesValidGuids()
             {
                 // Arrange
 
@@ -41,7 +41,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success2()
+            public void Fails_WhenInvalidConfig()
             {
                 // Arrange
 
@@ -51,7 +51,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success3()
+            public void Fail_WhenEmptyInput()
             {
                 // Arrange
 
@@ -61,7 +61,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success4()
+            public void GeneratesUniqueGuids()
             {
                 // Arrange
 
@@ -71,7 +71,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success5()
+            public void GeneratesGuidsV4()
             {
                 // Arrange
 

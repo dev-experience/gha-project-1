@@ -9,7 +9,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
         public class GetState
         {
             [Fact]
-            public void Success1()
+            public void GetsState()
             {
                 // Arrange
 
@@ -19,7 +19,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success2()
+            public void Fails_WhenEmptyConfig()
             {
                 // Arrange
 
@@ -29,7 +29,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success3()
+            public void Fails_WhenWrongConfig()
             {
                 // Arrange
 
@@ -42,7 +42,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
         public class GetConfig
         {
             [Fact]
-            public void Success1()
+            public void FetchesConfig()
             {
                 // Arrange
 
@@ -52,7 +52,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
             }
 
             [Fact]
-            public void Success2()
+            public void Fails_WhenWrongInput()
             {
                 // Arrange
 
@@ -65,7 +65,7 @@ namespace Xtz.TicketlessFlowApp.UnitTests
         public class FetchVenueData
         {
             [Fact]
-            public void Success1()
+            public void FetchesVenueData()
             {
                 // Arrange
 
