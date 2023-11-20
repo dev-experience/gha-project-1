@@ -172,6 +172,9 @@ jobs:
           TF_VAR_docker_registry_username: ${{ github.actor }}
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
+          TF_VAR_git_commit_sha: ${{ github.sha }}
+          TF_VAR_terraform_timestamp: ${{ github.sha }}
+          TF_VAR_workflow_run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
       - name: Terraform apply
@@ -255,6 +258,9 @@ jobs:
           TF_VAR_docker_registry_username: ${{ github.actor }}
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
+          TF_VAR_git_commit_sha: ${{ github.sha }}
+          TF_VAR_terraform_timestamp: ${{ github.sha }}
+          TF_VAR_workflow_run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
       - name: Terraform apply
@@ -338,6 +344,9 @@ jobs:
           TF_VAR_docker_registry_username: ${{ github.actor }}
           TF_VAR_docker_registry_password: ${{ secrets.GITHUB_TOKEN }}
           TF_VAR_docker_image_namespace: ${{ github.repository_owner }}
+          TF_VAR_git_commit_sha: ${{ github.sha }}
+          TF_VAR_terraform_timestamp: ${{ github.sha }}
+          TF_VAR_workflow_run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: terraform plan -var-file="./_env/$ENVIRONMENT.tfvars" -out="tfplan"
 
       - name: Terraform apply

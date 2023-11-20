@@ -2,6 +2,21 @@ module "constants" {
   source = "./constants"
 }
 
+variable "git_commit_sha" {
+  type        = string
+  description = "Git commit SHA"
+}
+
+variable "terraform_timestamp" {
+  type        = string
+  description = "Terraform run timestamp"
+}
+
+variable "workflow_run_url" {
+  type        = string
+  description = "Workflow run URL"
+}
+
 variable "subscription_id" {
   type        = string
   description = "Subscription ID"

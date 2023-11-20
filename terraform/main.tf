@@ -10,6 +10,9 @@ locals {
   tags = {
     "Environment" : var.environment
     "Business Unit" : var.tag_business_unit
+    "Git Commit" : var.git_commit_sha
+    "Terraform Timestamp" : var.terraform_timestamp
+    "Workflow Run URL" : var.workflow_run_url
   }
 }
 
