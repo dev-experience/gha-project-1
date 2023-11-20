@@ -62,6 +62,10 @@ resource "azurerm_linux_function_app" "this" {
         image_tag = var.docker_image_tag
       }
     }
+
+    cors {
+      allowed_origins = [ "https://portal.azure.com" ]
+    }
   }
 
   identity {
