@@ -5,7 +5,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
         public class GetAll
         {
             [Fact]
-            public void Success1()
+            public void Fetches()
             {
                 // Arrange
 
@@ -15,7 +15,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success2()
+            public void FetchesEmpty_WhenDoesntExist()
             {
                 // Arrange
 
@@ -25,7 +25,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success3()
+            public void Fails_WhenInvalidInput()
             {
                 // Arrange
 
@@ -35,7 +35,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success4()
+            public void Fetches_WhenFilterProvided()
             {
                 // Arrange
 
@@ -45,7 +45,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success5()
+            public void FetchesWithOrder_WhenOrderConfigured()
             {
                 // Arrange
 
@@ -55,7 +55,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success6()
+            public void FetchesNothing_WhenNothingExists()
             {
                 // Arrange
 
@@ -65,7 +65,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success7()
+            public void Fails_WhenAuthIsWrong()
             {
                 // Arrange
 
@@ -75,27 +75,7 @@ namespace Xtz.TicketlessFlowApp.IntegrationTests
             }
 
             [Fact]
-            public void Success8()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success9()
-            {
-                // Arrange
-
-                // Act
-
-                // Assert
-            }
-
-            [Fact]
-            public void Success10()
+            public void Fetches_WithCacheHeaders()
             {
                 // Arrange
 
